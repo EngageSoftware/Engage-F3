@@ -1,0 +1,42 @@
+<dotnetnuke version="3.0" type="Module">
+  <folders>
+    <folder>
+      <name>Engage: F3</name>
+      <friendlyname>Engage: F3</friendlyname>
+      <foldername>EngageF3</foldername>
+      <modulename>Engage: F3</modulename>
+      <description>A F3 module from Engage Software (www.engagesoftware.net)</description>
+      <version>02.00.00</version>
+      <businesscontrollerclass></businesscontrollerclass>
+      <resourcefile>Resources.zip</resourcefile>
+      <modules>
+        <module>
+          <friendlyname>Engage: F3</friendlyname>
+          <cachetime>0</cachetime>
+          <controls>
+            <control>
+              <src>DesktopModules/EngageF3/ViewLinks.ascx</src>
+              <type>View</type>
+              <helpurl></helpurl>
+            </control>
+            <control>
+              <key>Settings</key>
+              <title>F3 Settings</title>
+              <src>DesktopModules/EngageF3/Settings.ascx</src>
+              <type>Edit</type>
+              <helpurl></helpurl>
+            </control>
+          </controls>
+        </module>
+      </modules>
+      <files>
+        <file>
+	     <name>EngageF3.dll</name>
+	      </file>
+        <file>
+          <name>Uninstall.SqlDataProvider</name>
+        </file>
+      </files>
+    </folder>
+  </folders>
+</dotnetnuke>
