@@ -25,8 +25,9 @@
     <DebugType>full</DebugType>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <OutputPath>..\..\bin\</OutputPath>
-    <DocumentationFile>LinkChecker.xml</DocumentationFile>
+    <DocumentationFile>EngageF3.xml</DocumentationFile>
     <WarningLevel>1</WarningLevel>
+    <RunCodeAnalysis>true</RunCodeAnalysis>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>

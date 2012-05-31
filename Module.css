@@ -1,4 +1,13 @@
-#engageF3 .DataGrid_Container td
+.engageF3 .DataGrid_Container td
 {
 	padding:3px 3px 3px 3px;
+}
+.settings
+{
+    padding: 0;
+    margin: 0;
+}
+.settings li
+{
+    list-style-type: none;
 }

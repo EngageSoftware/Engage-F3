@@ -33,21 +33,22 @@ namespace Engage.Dnn.F3
     /// -----------------------------------------------------------------------------
     public abstract class DataProvider
     {
-        // singleton reference to the instantiated object 
-        private static DataProvider _objProvider;
-
-        // constructor
+        /// <summary>
+        /// Initializes static members of the <see cref="DataProvider"/> class.
+        /// </summary>
         static DataProvider()
         {
             CreateProvider();
         }
 
-        // dynamically create provider
-
-        // return the provider
-        public static new DataProvider Instance()
+        /// <summary>
+        /// Gets the <see cref="DataProvider"/> instance.
+        /// </summary>
+        /// <value>The instance of the <see cref="DataProvider"/> class.</value>
+        public static new DataProvider Instance
         {
-            return _objProvider;
+            get;
+            private set;
         }
 
         public abstract DataTable GetLinks(string searchString, int portalId, int lowerTab, int upperTab);
@@ -56,12 +57,14 @@ namespace Engage.Dnn.F3
 
         public abstract DataTable GetPublishLinks(string searchString, int portalId);
 
-        // public abstract void ReplaceTextHTML(int moduleId, string desktopHtml, string desktopSummary, int userId);
         public abstract void ReplaceTextHTML(int itemId, string content, int stateId, bool isPublished, int userId);
 
+        /// <summary>
+        /// Creates the provider.
+        /// </summary>
         private static void CreateProvider()
         {
-            _objProvider = (DataProvider)Reflection.CreateObject("data", "Engage.Dnn.F3", string.Empty);
+            Instance = (DataProvider)Reflection.CreateObject("data", "Engage.Dnn.F3", string.Empty);
         }
     }
 }

@@ -123,13 +123,16 @@
   <data name="ControlTitle_settings.Text" xml:space="preserve">
     <value>Engage: F3 Settings</value>
   </data>
-  <data name="ModuleHelp.Text" xml:space="preserve">
-    <value>Testing help.</value>
-  </data>
   <data name="lblLowerTab.Text" xml:space="preserve">
     <value>Lower Tab Limit &gt;=</value>
   </data>
   <data name="lblUpperTab.Text" xml:space="preserve">
     <value>Upper Tab Limit &lt;=</value>
+  </data>
+  <data name="lblLowerTab.Help" xml:space="preserve">
+    <value>Set the lowest Tab ID which you want to be searched for Text/HTML content by this module</value>
+  </data>
+  <data name="lblUpperTab.Help" xml:space="preserve">
+    <value>Set the highest Tab ID which you want to be searched for Text/HTML content by this module</value>
   </data>
 </root>

@@ -21,25 +21,31 @@ namespace Engage.Dnn.F3
 {
     using System;
     using System.Data;
+    using System.Globalization;
     using System.Web;
+    using System.Web.UI;
+    using System.Web.UI.WebControls;
     using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.Localization;
     using Publish;
 
     /// <summary>
-    /// The ViewF3 class displays the content
+    /// Allows the user to search for content in either module and to replace values once found
     /// </summary>
-    /// <remarks>
-    /// </remarks>
-    /// <history>
-    /// </history>
     public partial class ViewLinks : PortalModuleBase
     {
-        private int _lowerTabId = -1;
+        /// <summary>
+        /// Backing field for <see cref="LowerTabId"/>
+        /// </summary>
+        private int? lowerTabId;
 
-        private int _upperTabId = -1;
+        /// <summary>
+        /// Backing field for <see cref="UpperTabId"/>
+        /// </summary>
+        private int? upperTabId;
 
         public static string ApplicationUrl
         {
@@ -54,100 +60,186 @@ namespace Engage.Dnn.F3
             }
         }
 
+        /// <summary>
+        /// Gets the lowest tab ID to search when searching Text/HTML modules.
+        /// </summary>
+        /// <value>The lowest tab ID for Text/HTML search.</value>
         public int LowerTabId
         {
             get
             {
-                object o = this.Settings["lowerTabId"];
-                if (o == null || (!int.TryParse(o.ToString(), out this._lowerTabId) && o != string.Empty))
+                if (!this.lowerTabId.HasValue)
                 {
-                    this._lowerTabId = Convert.ToInt32(o);
+                    int tabId;
+                    var lowerTabIdValue = (string)this.Settings["lowerTabId"];
+                    if (int.TryParse(lowerTabIdValue, NumberStyles.Integer, CultureInfo.InvariantCulture, out tabId))
+                    {
+                        this.lowerTabId = tabId;
+                    }
+                    else
+                    {
+                        this.lowerTabId = Null.NullInteger;
+                    }
                 }
 
-                return this._lowerTabId;
+                return this.lowerTabId.Value;
             }
         }
 
+        /// <summary>
+        /// Gets the highest tab ID to search when searching Text/HTML modules.
+        /// </summary>
+        /// <value>The highest tab ID for Text/HTML search.</value>
         public int UpperTabId
         {
             get
             {
-                object o = this.Settings["upperTabId"];
-                if (o == null || (!int.TryParse(o.ToString(), out this._upperTabId) && o != string.Empty))
+                int tabId;
+                var upperTabIdValue = (string)this.Settings["upperTabId"];
+                if (int.TryParse(upperTabIdValue, NumberStyles.Integer, CultureInfo.InvariantCulture, out tabId))
                 {
-                    this._upperTabId = Convert.ToInt32(o);
+                    this.upperTabId = tabId;
+                }
+                else
+                {
+                    this.upperTabId = Null.NullInteger;
                 }
 
-                return this._upperTabId;
+                return this.upperTabId.Value;
             }
         }
 
         public string CleanupText(string text)
         {
-            string returnVal = this.Server.HtmlEncode(text);
-            if (returnVal.Length > 500)
+            string encodedText = HttpUtility.HtmlEncode(text);
+            if (encodedText.Length > 500)
             {
-                return returnVal.Substring(0, 500);
+                return encodedText.Substring(0, 500);
             }
 
-            return returnVal;
+            return encodedText;
         }
 
-        public string GetEditLink(int moduleId, int tabid)
+        public string GetTextHtmlModuleEditLink(int moduleId, int tabid)
         {
             return Globals.NavigateURL(tabid, "edit", "&mid=" + moduleId);
         }
 
-        public string GetPublishLink(int itemId)
+        public string GetPublishViewLink(int itemId)
         {
             return ApplicationUrl + "/desktopmodules/engagepublish/itemlink.aspx?itemId=" + itemId;
         }
 
-        protected void BindData(string searchString)
+        protected void BindTextHtmlData(string searchString)
         {
-            // bind the data
             if (this.UserInfo.IsSuperUser)
             {
-                this.dgResults.DataSource = DataProvider.Instance().GetLinks(searchString, this.LowerTabId, this.UpperTabId);
-                this.dgResults.DataBind();
+                this.ResultsGrid.DataSource = DataProvider.Instance.GetLinks(searchString, this.LowerTabId, this.UpperTabId);
+                this.ResultsGrid.DataBind();
             }
             else
             {
-                this.dgResults.DataSource = DataProvider.Instance().GetLinks(searchString, this.PortalId, this.LowerTabId, this.UpperTabId);
-                this.dgResults.DataBind();
+                this.ResultsGrid.DataSource = DataProvider.Instance.GetLinks(searchString, this.PortalId, this.LowerTabId, this.UpperTabId);
+                this.ResultsGrid.DataBind();
             }
-
-            this.pnlReplacement.Visible = true;
         }
 
         protected void BindPublishData(string searchString)
         {
             // bind the data
-            this.dgPublishResults.DataSource = DataProvider.Instance().GetPublishLinks(searchString, this.PortalId);
-            this.dgPublishResults.DataBind();
+            this.PublishResultsGrid.DataSource = DataProvider.Instance.GetPublishLinks(searchString, this.PortalId);
+            this.PublishResultsGrid.DataBind();
         }
 
-        protected void btnEngagePublish_Click(object sender, EventArgs e)
+        /// <summary>
+        /// Raises the <see cref="Control.Init"/> event.
+        /// </summary>
+        /// <param name="e">An <see cref="EventArgs"/> object that contains the event data.</param>
+        protected override void OnInit(EventArgs e)
         {
-            this.BindPublishData(this.txtSearchString.Text.Trim());
-
-            this.dgResults.Visible = false;
-            this.dgPublishResults.Visible = true;
-            this.pnlReplacement.Visible = true;
+            this.Load += this.Page_Load;
+            this.SearchTextHtmlButton.Click += this.SearchTextHtmlButton_Click;
+            this.SearchPublishButton.Click += this.SearchPublishButton_Click;
+            this.ReplaceTextHtmlButton.Click += this.ReplaceTextHtmlButton_Click;
+            this.ReplacePublishButton.Click += this.ReplacePublishButton_Click;
+            base.OnInit(e);
         }
 
-        protected void btnReplace_Click(object sender, EventArgs e)
+        /// <summary>
+        /// Handles the <see cref="Control.Load"/> event of this control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
+        private void Page_Load(object sender, EventArgs e)
+        {
+            try
+            {
+                this.SearchPublishButton.Visible = this.Settings.Contains("chkEnablePublish")
+                                                   && Convert.ToBoolean(this.Settings["chkEnablePublish"].ToString());
+            }
+            catch (Exception exc)
+            {
+                // Module failed to load
+                Exceptions.ProcessModuleLoadException(this, exc);
+            }
+        }
+
+        /// <summary>
+        /// Handles the <see cref="Button.Click"/> event of the <see cref="ReplacePublishButton"/> control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
+        private void ReplacePublishButton_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                string replacementString = this.ReplacementTextBox.Text.Trim();
+                string searchString = this.SearchStringTextBox.Text.Trim();
+                if (replacementString != string.Empty && searchString != string.Empty)
+                {
+                    DataTable dt = DataProvider.Instance.GetPublishLinks(searchString, this.PortalId);
+
+                    foreach (DataRow dr in dt.Rows)
+                    {
+                        Article article = Article.GetArticle(Convert.ToInt32(dr["ItemId"]), this.PortalId, true, true);
+
+                        string articleDescription = article.Description.Replace(searchString, replacementString);
+                        string articleBody = article.ArticleText.Replace(searchString, replacementString);
+                        article.ArticleText = articleBody;
+                        article.Description = articleDescription;
+                        article.Save(this.UserInfo.UserID);
+                    }
+
+                    string replacementResults = Localization.GetString("replacementResults", this.LocalResourceFile);
+                    this.ReplacementResultsLabel.Text = String.Format(replacementResults, searchString, replacementString, dt.Rows.Count);
+                    this.ReplacementResultsLabel.Visible = true;
+                    this.ResultsGrid.Visible = false;
+                    this.PublishResultsGrid.Visible = false;
+                }
+            }
+            catch (Exception exc)
+            {
+                Exceptions.ProcessModuleLoadException(this, exc);
+            }
+        }
+
+        /// <summary>
+        /// Handles the <see cref="Button.Click"/> event of the <see cref="ReplaceTextHtmlButton"/> control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
+        private void ReplaceTextHtmlButton_Click(object sender, EventArgs e)
         {
             try
             {
                 // loop through the Text/HTML modules and start updating fields
-                string replacementString = this.txtReplacementText.Text.Trim();
-                string searchString = this.txtSearchString.Text.Trim();
+                string replacementString = this.ReplacementTextBox.Text.Trim();
+                string searchString = this.SearchStringTextBox.Text.Trim();
                 if (replacementString != string.Empty && searchString != string.Empty)
                 {
                     DataTable dt = this.UserInfo.IsSuperUser
-                                           ? DataProvider.Instance().GetLinks(searchString, this.LowerTabId, this.UpperTabId)
-                                           : DataProvider.Instance().GetLinks(searchString, this.PortalId, this.LowerTabId, this.UpperTabId);
+                                           ? DataProvider.Instance.GetLinks(searchString, this.LowerTabId, this.UpperTabId)
+                                           : DataProvider.Instance.GetLinks(searchString, this.PortalId, this.LowerTabId, this.UpperTabId);
 
                     foreach (DataRow dr in dt.Rows)
                     {
@@ -157,14 +249,14 @@ namespace Engage.Dnn.F3
                         string content = dr["Content"].ToString();
                         content = content.Replace(searchString, replacementString);
 
-                        DataProvider.Instance().ReplaceTextHTML(itemId, content, stateId, isPublished, this.UserId);
+                        DataProvider.Instance.ReplaceTextHTML(itemId, content, stateId, isPublished, this.UserId);
                     }
 
                     string replacementResults = Localization.GetString("replacementResults", this.LocalResourceFile);
-                    this.lblReplacementResults.Text = String.Format(replacementResults, searchString, replacementString, dt.Rows.Count);
-                    this.lblReplacementResults.Visible = true;
-                    this.dgResults.Visible = false;
-                    this.dgPublishResults.Visible = false;
+                    this.ReplacementResultsLabel.Text = String.Format(replacementResults, searchString, replacementString, dt.Rows.Count);
+                    this.ReplacementResultsLabel.Visible = true;
+                    this.ResultsGrid.Visible = false;
+                    this.PublishResultsGrid.Visible = false;
                 }
             }
             catch (Exception exc)
@@ -173,34 +265,28 @@ namespace Engage.Dnn.F3
             }
         }
 
-        protected void btnReplaceEngagePublish_Click(object sender, EventArgs e)
+        /// <summary>
+        /// Handles the <see cref="Button.Click"/> event of the <see cref="SearchPublishButton"/> control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
+        private void SearchPublishButton_Click(object sender, EventArgs e)
+        {
+            this.BindPublishData(this.SearchStringTextBox.Text.Trim());
+            this.ShowResults(true);
+        }
+
+        /// <summary>
+        /// Handles the <see cref="Button.Click"/> event of the <see cref="SearchTextHtmlButton"/> control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
+        private void SearchTextHtmlButton_Click(object sender, EventArgs e)
         {
             try
             {
-                // loop through the Text/HTML modules and start updating fields
-                string replacementString = this.txtReplacementText.Text.Trim();
-                string searchString = this.txtSearchString.Text.Trim();
-                if (replacementString != string.Empty && searchString != string.Empty)
-                {
-                    DataTable dt = DataProvider.Instance().GetPublishLinks(searchString, this.PortalId);
-
-                    foreach (DataRow dr in dt.Rows)
-                    {
-                        Article a = Article.GetArticle(Convert.ToInt32(dr["ItemId"]), this.PortalId, true, true);
-
-                        string articleDescription = a.Description.Replace(searchString, replacementString);
-                        string articleBody = a.ArticleText.Replace(searchString, replacementString);
-                        a.ArticleText = articleBody;
-                        a.Description = articleDescription;
-                        a.Save(this.UserInfo.UserID);
-                    }
-
-                    string replacementResults = Localization.GetString("replacementResults", this.LocalResourceFile);
-                    this.lblReplacementResults.Text = String.Format(replacementResults, searchString, replacementString, dt.Rows.Count);
-                    this.lblReplacementResults.Visible = true;
-                    this.dgResults.Visible = false;
-                    this.dgPublishResults.Visible = false;
-                }
+                this.BindTextHtmlData(this.SearchStringTextBox.Text.Trim());
+                this.ShowResults(false);
             }
             catch (Exception exc)
             {
@@ -208,41 +294,21 @@ namespace Engage.Dnn.F3
             }
         }
 
-        protected void btnSearch_Click(object sender, EventArgs e)
+        /// <summary>
+        /// Shows the proper results grid and the <see cref="ReplacementPanel"/>, resetting its display and showing either the Text/HTML results and buttons.
+        /// </summary>
+        /// <param name="showPublish">if set to <c>true</c> shows the Engage: Publish search results and replace button, otherwise the Text/HTML results and button.</param>
+        private void ShowResults(bool showPublish)
         {
-            try
-            {
-                // search for the String and setup the results
-                this.BindData(this.txtSearchString.Text.Trim());
-                this.txtReplacementText.Text = string.Empty;
-                this.lblReplacementResults.Text = string.Empty;
-                this.dgResults.Visible = true;
-                this.dgPublishResults.Visible = false;
-            }
-            catch (Exception exc)
-            {
-                Exceptions.ProcessModuleLoadException(this, exc);
-            }
-        }
+            this.ReplacementPanel.Visible = true;
+            this.ReplacementTextBox.Text = string.Empty;
+            this.ReplacementResultsLabel.Text = string.Empty;
 
-        protected override void OnInit(EventArgs e)
-        {
-            this.Load += this.Page_Load;
-            base.OnInit(e);
-        }
+            this.ReplaceTextHtmlButton.Visible = !showPublish;
+            this.ReplacePublishButton.Visible = showPublish;
 
-        private void Page_Load(object sender, EventArgs e)
-        {
-            try
-            {
-                this.btnEngagePublish.Visible = this.Settings.Contains("chkEnablePublish")
-                                                && Convert.ToBoolean(this.Settings["chkEnablePublish"].ToString());
-            }
-            catch (Exception exc)
-            {
-                // Module failed to load
-                Exceptions.ProcessModuleLoadException(this, exc);
-            }
+            this.ResultsGrid.Visible = !showPublish;
+            this.PublishResultsGrid.Visible = showPublish;
         }
     }
 }

@@ -1,6 +1,14 @@
 <%@ Control Language="C#" AutoEventWireup="false" Inherits="Engage.Dnn.F3.Settings" Codebehind="Settings.ascx.cs" %>
 <%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/LabelControl.ascx" %>
-<asp:CheckBox ID="chkEnablePublish" runat="server" resourcekey="chkEnablePublish" /><br />
 
-<dnn:Label id="lblLowerTab" runat="server" resourcekey="lblLowerTab" /> <asp:TextBox ID="txtLowerTab" runat="server"></asp:TextBox><br />
-<dnn:Label id="lblUpperTab" runat="server" resourcekey="lblUpperTab" /> <asp:TextBox ID="txtUpperTab" runat="server"></asp:TextBox>
+<ul class="settings">
+    <li>
+        <asp:CheckBox ID="EnablePublishCheckBox" runat="server" resourcekey="chkEnablePublish" />
+    </li>
+    <li>
+        <dnn:Label runat="server" resourcekey="lblLowerTab" /> <asp:TextBox ID="LowerTabIdTextBox" runat="server"/>
+    </li>
+    <li>
+        <dnn:Label runat="server" resourcekey="lblUpperTab" /> <asp:TextBox ID="UpperTabIdTextBox" runat="server"/>
+    </li>
+</ul>

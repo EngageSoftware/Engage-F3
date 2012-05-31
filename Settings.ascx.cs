@@ -28,34 +28,28 @@ namespace Engage.Dnn.F3
     /// </summary>
     public partial class Settings : ModuleSettingsBase
     {
-        /// -----------------------------------------------------------------------------
         /// <summary>
-        /// LoadSettings loads the settings from the Database and displays them
+        /// Loads the settings from the Database and displays them
         /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// <history>
-        /// </history>
-        /// -----------------------------------------------------------------------------
         public override void LoadSettings()
         {
             try
             {
-                if (this.Page.IsPostBack == false)
+                if (!this.IsPostBack)
                 {
                     if (this.Settings.Contains("chkEnablePublish"))
                     {
-                        this.chkEnablePublish.Checked = Convert.ToBoolean(this.Settings["chkEnablePublish"].ToString());
+                        this.EnablePublishCheckBox.Checked = Convert.ToBoolean(this.Settings["chkEnablePublish"].ToString());
                     }
 
                     if (this.Settings.Contains("lowerTabId"))
                     {
-                        this.txtLowerTab.Text = this.Settings["lowerTabId"].ToString();
+                        this.LowerTabIdTextBox.Text = this.Settings["lowerTabId"].ToString();
                     }
 
                     if (this.Settings.Contains("upperTabId"))
                     {
-                        this.txtUpperTab.Text = this.Settings["upperTabId"].ToString();
+                        this.UpperTabIdTextBox.Text = this.Settings["upperTabId"].ToString();
                     }
                 }
             }
@@ -66,24 +60,18 @@ namespace Engage.Dnn.F3
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
-        /// UpdateSettings saves the modified settings to the Database
+        /// Saves the modified settings to the Database
         /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// <history>
-        /// </history>
-        /// -----------------------------------------------------------------------------
         public override void UpdateSettings()
         {
             try
             {
                 var objModules = new ModuleController();
 
-                objModules.UpdateTabModuleSetting(this.TabModuleId, "chkEnablePublish", this.chkEnablePublish.Checked.ToString());
-                objModules.UpdateTabModuleSetting(this.TabModuleId, "lowerTabId", this.txtLowerTab.Text);
-                objModules.UpdateTabModuleSetting(this.TabModuleId, "upperTabId", this.txtUpperTab.Text);
+                objModules.UpdateTabModuleSetting(this.TabModuleId, "chkEnablePublish", this.EnablePublishCheckBox.Checked.ToString());
+                objModules.UpdateTabModuleSetting(this.TabModuleId, "lowerTabId", this.LowerTabIdTextBox.Text);
+                objModules.UpdateTabModuleSetting(this.TabModuleId, "upperTabId", this.UpperTabIdTextBox.Text);
             }
             catch (Exception exc)
             {

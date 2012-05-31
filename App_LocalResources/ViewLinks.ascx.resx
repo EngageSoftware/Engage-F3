@@ -173,7 +173,7 @@
     <value>Replaced {0} with {1} in {2} modules.</value>
   </data>
   <data name="btnReplaceEngagePublish.Text" xml:space="preserve">
-    <value>Replaced Engage:Publish Values</value>
+    <value>Replace Engage:Publish Values</value>
   </data>
   <data name="lblContentIsPublishedHeader.Text" xml:space="preserve">
     <value>Is Published?</value>

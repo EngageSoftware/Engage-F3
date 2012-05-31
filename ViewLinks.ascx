@@ -1,130 +1,120 @@
-<%@ Control language="C#" Inherits="Engage.Dnn.F3.ViewLinks" AutoEventWireup="false"  Codebehind="ViewLinks.ascx.cs" %>
+<%@ Control Language="C#" Inherits="Engage.Dnn.F3.ViewLinks" AutoEventWireup="false" CodeBehind="ViewLinks.ascx.cs" %>
 <%@ Register TagPrefix="dnn" TagName="label" Src="~/controls/labelControl.ascx" %>
-
-<div id="engageF3" class="Normal">
-<div style="clear:both;">
-<asp:Label ID="lblInstructions" resourcekey="lblInstructions" runat="server" />
-<br />
-<br />
-</div>
-
-<dnn:label id="lblSearchString" resourcekey="lblSearchString" Runat="server"></dnn:label>
-<asp:TextBox ID="txtSearchString" runat="server"></asp:TextBox>
-<asp:Button ID="btnSearch" resourcekey="btnSearch" runat="server" Text="Text/HTML" OnClick="btnSearch_Click" />
-<asp:Button ID="btnEngagePublish" resourcekey="btnEngagePublish" runat="server" Text="Engage: Publish" OnClick="btnEngagePublish_Click" />
-<asp:DataGrid ID="dgResults" runat="server" AutoGenerateColumns="false" CssClass="DataGrid_Container">
-<HeaderStyle VerticalAlign="Top" CssClass="DataGrid_Header" />
-<ItemStyle CssClass="DataGrid_Item" />
-<AlternatingItemStyle CssClass="DataGrid_AlternatingItem" />
-<FooterStyle CssClass="DataGrid_Footer" />
-<Columns>
-    <asp:TemplateColumn>
-    <HeaderTemplate>
-        <asp:Label ID="lblPageNameHeader" resourcekey="lblPageNameHeader" runat="server"></asp:Label>
-    </HeaderTemplate>
-    <ItemTemplate>
-        <asp:Label ID="lblPageName" runat="server" Text='<%# DataBinder.Eval(Container.DataItem,"TabName") %>'></asp:Label>
-    </ItemTemplate>
-    </asp:TemplateColumn>
-    
-    <asp:TemplateColumn>
-       <HeaderTemplate>
-       <asp:Label ID="lblModuleTitleHeader" resourcekey="lblModuleTitleHeader" runat="server"></asp:Label>
-       </HeaderTemplate>
-       <ItemTemplate>
-        <asp:Label ID="lblModuleText" runat="server" Text='<%# DataBinder.Eval(Container.DataItem,"ModuleTitle") %>'></asp:Label>
-       </ItemTemplate>   
-    </asp:TemplateColumn>
-    
-    <asp:TemplateColumn>
-       <HeaderTemplate>
-       <asp:Label ID="lblModuleTextHeader" resourcekey="lblModuleTextHeader" runat="server"></asp:Label>
-       </HeaderTemplate>
-       <ItemTemplate>
-        <asp:Label ID="lblModuleText" runat="server" Text='<%# CleanupText(DataBinder.Eval(Container.DataItem,"Content").ToString()) %>'></asp:Label>
-       </ItemTemplate>   
-    </asp:TemplateColumn>
-    <asp:TemplateColumn>
-       <HeaderTemplate>
-       <asp:Label ID="lblContentStateIdHeader" resourcekey="lblContentStateIdHeader" runat="server"></asp:Label>
-       </HeaderTemplate>
-       <ItemTemplate>
-        <asp:Label ID="lblContentStateIdText" runat="server" Text='<%# DataBinder.Eval(Container.DataItem,"StateId").ToString() %>'></asp:Label>
-       </ItemTemplate>   
-    </asp:TemplateColumn>
-     <asp:TemplateColumn>
-       <HeaderTemplate>
-       <asp:Label ID="lblContentIsPublishedHeader" resourcekey="lblContentIsPublishedHeader" runat="server"></asp:Label>
-       </HeaderTemplate>
-       <ItemTemplate>
-        <asp:Label ID="lblContentIsPublishedText" runat="server" Text='<%# DataBinder.Eval(Container.DataItem,"IsPublished").ToString() %>'></asp:Label>
-       </ItemTemplate>   
-    </asp:TemplateColumn>
-      <asp:TemplateColumn>
-       <HeaderTemplate>
-        <asp:Label ID="lblEditHeader" resourcekey="lblEditHeader" runat="server"></asp:Label>
-       </HeaderTemplate>
-       <ItemTemplate>
-        <asp:HyperLink ID="lnkEditLink" Target="_blank" NavigateUrl='<%# GetEditLink(Convert.ToInt32(DataBinder.Eval(Container.DataItem,"ModuleId")), Convert.ToInt32(DataBinder.Eval(Container.DataItem,"TabId")))%>' resourcekey="lnkEditLink" runat="server"></asp:HyperLink>
-       </ItemTemplate>   
-    </asp:TemplateColumn>
-    
-</Columns>
-</asp:DataGrid>
-
-<asp:DataGrid ID="dgPublishResults" runat="server" AutoGenerateColumns="false" CssClass="DataGrid_Container">
-<HeaderStyle VerticalAlign="Top" CssClass="DataGrid_Header" />
-<ItemStyle CssClass="DataGrid_Item" />
-<AlternatingItemStyle CssClass="DataGrid_AlternatingItem" />
-<FooterStyle CssClass="DataGrid_Footer" />
-<Columns>
-
-<asp:TemplateColumn>
-       <HeaderTemplate>
-       <asp:Label ID="lblModuleTitleHeader" resourcekey="lblItemId" runat="server"></asp:Label>
-       </HeaderTemplate>
-       <ItemTemplate>
-        <asp:Label ID="lblModuleText" runat="server" Text='<%# DataBinder.Eval(Container.DataItem,"ItemId") %>'></asp:Label>
-       </ItemTemplate>   
-    </asp:TemplateColumn>
-    
-    <asp:TemplateColumn>
-       <HeaderTemplate>
-       <asp:Label ID="lblModuleTitleHeader" resourcekey="lblArticleTitleHeader" runat="server"></asp:Label>
-       </HeaderTemplate>
-       <ItemTemplate>
-        <asp:Label ID="lblModuleText" runat="server" Text='<%# DataBinder.Eval(Container.DataItem,"Name") %>'></asp:Label>
-       </ItemTemplate>   
-    </asp:TemplateColumn>
-    
-    <asp:TemplateColumn>
-       <HeaderTemplate>
-       <asp:Label ID="lblModuleTextHeader" resourcekey="lblModuleTextHeader" runat="server"></asp:Label>
-       </HeaderTemplate>
-       <ItemTemplate>
-        <asp:Label ID="lblModuleText" runat="server" Text='<%# CleanupText(DataBinder.Eval(Container.DataItem,"ArticleText").ToString()) %>'></asp:Label>
-       </ItemTemplate>   
-    </asp:TemplateColumn>
-   
-      <asp:TemplateColumn>
-       <HeaderTemplate>
-        <asp:Label ID="lblEditHeader" resourcekey="lblEditPublishHeader" runat="server"></asp:Label>
-       </HeaderTemplate>
-       <ItemTemplate>
-        <asp:HyperLink ID="lnkEditLink" Target="_blank" NavigateUrl='<%# GetPublishLink(Convert.ToInt32(DataBinder.Eval(Container.DataItem,"ItemID")))%>' resourcekey="lnkEditLink" runat="server"></asp:HyperLink>
-       </ItemTemplate>   
-    </asp:TemplateColumn>
-    
-</Columns>
-</asp:DataGrid>
-<br /><br />
-
-<asp:panel ID="pnlReplacement" runat="server" Visible="false">
-    <dnn:label ID="plHtmlReplace" runat="server" />
-    <asp:TextBox ID="txtReplacementText" runat="server"></asp:TextBox>
-    <asp:Button ID="btnReplace" resourcekey="btnReplace" runat="server" OnClick="btnReplace_Click" />
-    <asp:Button ID="btnReplaceEngagePublish" resourcekey="btnReplaceEngagePublish" runat="server" Text="Engage: Publish" OnClick="btnReplaceEngagePublish_Click" />
-    <br />
-    <asp:Label ID="lblReplacementResults" CssClass="error" runat="server" />
-</asp:panel>
+<div class="Normal engageF3">
+    <div style="clear: both;">
+        <p>
+            <asp:Label resourcekey="lblInstructions" runat="server" />
+        </p>
+    </div>
+    <dnn:label ResourceKey="lblSearchString" runat="server"/>
+    <asp:TextBox ID="SearchStringTextBox" runat="server"/>
+    <asp:Button ID="SearchTextHtmlButton" resourcekey="btnSearch" runat="server" Text="Text/HTML" />
+    <asp:Button ID="SearchPublishButton" resourcekey="btnEngagePublish" runat="server" Text="Engage: Publish" />
+    <asp:DataGrid ID="ResultsGrid" runat="server" AutoGenerateColumns="false" CssClass="DataGrid_Container" GridLines="None">
+        <HeaderStyle VerticalAlign="Top" CssClass="DataGrid_Header" />
+        <ItemStyle CssClass="DataGrid_Item" />
+        <AlternatingItemStyle CssClass="DataGrid_AlternatingItem" />
+        <FooterStyle CssClass="DataGrid_Footer" />
+        <Columns>
+            <asp:TemplateColumn>
+                <HeaderTemplate>
+                    <asp:Label resourcekey="lblPageNameHeader" runat="server"/>
+                </HeaderTemplate>
+                <ItemTemplate>
+                    <asp:Label runat="server" Text='<%# Eval("TabName") %>'/>
+                </ItemTemplate>
+            </asp:TemplateColumn>
+            <asp:TemplateColumn>
+                <HeaderTemplate>
+                    <asp:Label resourcekey="lblModuleTitleHeader" runat="server"/>
+                </HeaderTemplate>
+                <ItemTemplate>
+                    <asp:Label runat="server" Text='<%# Eval("ModuleTitle") %>'/>
+                </ItemTemplate>
+            </asp:TemplateColumn>
+            <asp:TemplateColumn>
+                <HeaderTemplate>
+                    <asp:Label resourcekey="lblModuleTextHeader" runat="server"/>
+                </HeaderTemplate>
+                <ItemTemplate>
+                    <asp:Label runat="server" Text='<%# CleanupText(Eval("Content").ToString()) %>'/>
+                </ItemTemplate>
+            </asp:TemplateColumn>
+            <asp:TemplateColumn>
+                <HeaderTemplate>
+                    <asp:Label resourcekey="lblContentStateIdHeader" runat="server"/>
+                </HeaderTemplate>
+                <ItemTemplate>
+                    <asp:Label runat="server" Text='<%# Eval("StateId").ToString() %>'/>
+                </ItemTemplate>
+            </asp:TemplateColumn>
+            <asp:TemplateColumn>
+                <HeaderTemplate>
+                    <asp:Label resourcekey="lblContentIsPublishedHeader" runat="server"/>
+                </HeaderTemplate>
+                <ItemTemplate>
+                    <asp:Label runat="server" Text='<%# Eval("IsPublished").ToString() %>'/>
+                </ItemTemplate>
+            </asp:TemplateColumn>
+            <asp:TemplateColumn>
+                <HeaderTemplate>
+                    <asp:Label resourcekey="lblEditHeader" runat="server"/>
+                </HeaderTemplate>
+                <ItemTemplate>
+                    <asp:HyperLink Target="_blank" NavigateUrl='<%# this.GetTextHtmlModuleEditLink((int)Eval("ModuleId"), (int)Eval("TabId"))%>' resourcekey="lnkEditLink" runat="server"/>
+                </ItemTemplate>
+            </asp:TemplateColumn>
+        </Columns>
+    </asp:DataGrid>
+    <asp:DataGrid ID="PublishResultsGrid" runat="server" AutoGenerateColumns="false" CssClass="DataGrid_Container" GridLines="None">
+        <HeaderStyle VerticalAlign="Top" CssClass="DataGrid_Header" />
+        <ItemStyle CssClass="DataGrid_Item" />
+        <AlternatingItemStyle CssClass="DataGrid_AlternatingItem" />
+        <FooterStyle CssClass="DataGrid_Footer" />
+        <Columns>
+            <asp:TemplateColumn>
+                <HeaderTemplate>
+                    <asp:Label resourcekey="lblItemId" runat="server"/>
+                </HeaderTemplate>
+                <ItemTemplate>
+                    <asp:Label runat="server" Text='<%# Eval("ItemId") %>'/>
+                </ItemTemplate>
+            </asp:TemplateColumn>
+            <asp:TemplateColumn>
+                <HeaderTemplate>
+                    <asp:Label resourcekey="lblArticleTitleHeader" runat="server"/>
+                </HeaderTemplate>
+                <ItemTemplate>
+                    <asp:Label runat="server" Text='<%# Eval("Name") %>'/>
+                </ItemTemplate>
+            </asp:TemplateColumn>
+            <asp:TemplateColumn>
+                <HeaderTemplate>
+                    <asp:Label resourcekey="lblModuleTextHeader" runat="server"/>
+                </HeaderTemplate>
+                <ItemTemplate>
+                    <asp:Label runat="server" Text='<%# CleanupText(Eval("ArticleText").ToString()) %>'/>
+                </ItemTemplate>
+            </asp:TemplateColumn>
+            <asp:TemplateColumn>
+                <HeaderTemplate>
+                    <asp:Label resourcekey="lblEditPublishHeader" runat="server"/>
+                </HeaderTemplate>
+                <ItemTemplate>
+                    <asp:HyperLink Target="_blank" NavigateUrl='<%# this.GetPublishViewLink((int)Eval("ItemID"))%>' resourcekey="lnkEditLink" runat="server"/>
+                </ItemTemplate>
+            </asp:TemplateColumn>
+        </Columns>
+    </asp:DataGrid>
+    <asp:Panel ID="ReplacementPanel" runat="server" Visible="false">
+        <div>
+            <dnn:label ResourceKey="HtmlReplaceLabel" runat="server" />
+            <asp:TextBox ID="ReplacementTextBox" runat="server" />
+            <asp:Button ID="ReplaceTextHtmlButton" resourcekey="btnReplace" runat="server" />
+            <asp:Button ID="ReplacePublishButton" resourcekey="btnReplaceEngagePublish" runat="server" />
+        </div>
+        <div>
+            <asp:Label ID="ReplacementResultsLabel" CssClass="error" runat="server" />
+        </div>
+    </asp:Panel>
 </div>

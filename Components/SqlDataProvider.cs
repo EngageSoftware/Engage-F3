@@ -34,85 +34,72 @@ namespace Engage.Dnn.F3
 
         private const string ProviderType = "data";
 
-        private string _connectionString;
+        private ProviderConfiguration providerConfiguration = ProviderConfiguration.GetProviderConfiguration(ProviderType);
 
-        private string _databaseOwner;
-
-        private string _objectQualifier;
-
-        private ProviderConfiguration _providerConfiguration = ProviderConfiguration.GetProviderConfiguration(ProviderType);
-
-        private string _providerPath;
-
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SqlDataProvider"/> class.
+        /// </summary>
         public SqlDataProvider()
         {
             // Read the configuration specific information for this provider
-            var objProvider = (Provider)this._providerConfiguration.Providers[this._providerConfiguration.DefaultProvider];
+            var objProvider = (Provider)this.providerConfiguration.Providers[this.providerConfiguration.DefaultProvider];
 
             // Read the attributes for this provider
 
             // Get Connection string from web.config
-            this._connectionString = Config.GetConnectionString();
+            this.ConnectionString = Config.GetConnectionString();
 
-            if (this._connectionString == string.Empty)
+            if (this.ConnectionString == string.Empty)
             {
                 // Use connection string specified in provider
-                this._connectionString = objProvider.Attributes["connectionString"];
+                this.ConnectionString = objProvider.Attributes["connectionString"];
             }
 
-            this._providerPath = objProvider.Attributes["providerPath"];
+            this.ProviderPath = objProvider.Attributes["providerPath"];
 
-            this._objectQualifier = objProvider.Attributes["objectQualifier"];
-            if (this._objectQualifier != string.Empty & this._objectQualifier.EndsWith("_") == false)
+            this.ObjectQualifier = objProvider.Attributes["objectQualifier"];
+            if (this.ObjectQualifier != string.Empty & this.ObjectQualifier.EndsWith("_") == false)
             {
-                this._objectQualifier += "_";
+                this.ObjectQualifier += "_";
             }
 
-            this._databaseOwner = objProvider.Attributes["databaseOwner"];
-            if (this._databaseOwner != string.Empty & this._databaseOwner.EndsWith(".") == false)
+            this.DatabaseOwner = objProvider.Attributes["databaseOwner"];
+            if (this.DatabaseOwner != string.Empty & this.DatabaseOwner.EndsWith(".") == false)
             {
-                this._databaseOwner += ".";
+                this.DatabaseOwner += ".";
             }
         }
 
         public string ConnectionString
         {
-            get
-            {
-                return this._connectionString;
-            }
+            get;
+            private set;
         }
 
         public string DatabaseOwner
         {
-            get
-            {
-                return this._databaseOwner;
-            }
+            get;
+            private set;
         }
 
         public string NamePrefix
         {
             get
             {
-                return this._databaseOwner + this._objectQualifier + ModuleQualifier;
+                return this.DatabaseOwner + this.ObjectQualifier + ModuleQualifier;
             }
         }
 
         public string ObjectQualifier
         {
-            get
-            {
-                return this._objectQualifier;
-            }
+            get;
+            private set;
         }
 
         public string ProviderPath
         {
-            get
-            {
-                return this._providerPath;
-            }
+            get;
+            private set;
         }
 
         public override DataTable GetLinks(string searchString, int portalId, int lowerTab, int upperTab)

@@ -14,120 +14,93 @@ namespace Engage.Dnn.F3 {
     public partial class ViewLinks {
         
         /// <summary>
-        /// lblInstructions control.
+        /// SearchStringTextBox control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblInstructions;
+        protected global::System.Web.UI.WebControls.TextBox SearchStringTextBox;
         
         /// <summary>
-        /// lblSearchString control.
+        /// SearchTextHtmlButton control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl lblSearchString;
+        protected global::System.Web.UI.WebControls.Button SearchTextHtmlButton;
         
         /// <summary>
-        /// txtSearchString control.
+        /// SearchPublishButton control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtSearchString;
+        protected global::System.Web.UI.WebControls.Button SearchPublishButton;
         
         /// <summary>
-        /// btnSearch control.
+        /// ResultsGrid control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnSearch;
+        protected global::System.Web.UI.WebControls.DataGrid ResultsGrid;
         
         /// <summary>
-        /// btnEngagePublish control.
+        /// PublishResultsGrid control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnEngagePublish;
+        protected global::System.Web.UI.WebControls.DataGrid PublishResultsGrid;
         
         /// <summary>
-        /// dgResults control.
+        /// ReplacementPanel control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DataGrid dgResults;
+        protected global::System.Web.UI.WebControls.Panel ReplacementPanel;
         
         /// <summary>
-        /// dgPublishResults control.
+        /// ReplacementTextBox control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DataGrid dgPublishResults;
+        protected global::System.Web.UI.WebControls.TextBox ReplacementTextBox;
         
         /// <summary>
-        /// pnlReplacement control.
+        /// ReplaceTextHtmlButton control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel pnlReplacement;
+        protected global::System.Web.UI.WebControls.Button ReplaceTextHtmlButton;
         
         /// <summary>
-        /// plHtmlReplace control.
+        /// ReplacePublishButton control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl plHtmlReplace;
+        protected global::System.Web.UI.WebControls.Button ReplacePublishButton;
         
         /// <summary>
-        /// txtReplacementText control.
+        /// ReplacementResultsLabel control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtReplacementText;
-        
-        /// <summary>
-        /// btnReplace control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnReplace;
-        
-        /// <summary>
-        /// btnReplaceEngagePublish control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnReplaceEngagePublish;
-        
-        /// <summary>
-        /// lblReplacementResults control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblReplacementResults;
+        protected global::System.Web.UI.WebControls.Label ReplacementResultsLabel;
     }
 }
