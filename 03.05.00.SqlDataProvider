@@ -32,4 +32,5 @@ AS
       AND (@portalId IS NULL OR m.PortalID = @portalId)
       AND (@lowerTabId IS NULL OR t.TabID >= @lowerTabId)
       AND (@upperTabId IS NULL OR t.TabID <= @upperTabId)
+
 GO
