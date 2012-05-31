@@ -136,6 +136,7 @@
     <None Include="App_LocalResources\ViewLinks.ascx.resx">
       <SubType>Designer</SubType>
     </None>
+    <None Include="03.03.00.SqlDataProvider" />
     <None Include="EngageF3.Build" />
     <None Include="EngageF3.dnn" />
     <None Include="Migrated rules for EngageF3.ruleset" />
