@@ -128,9 +128,6 @@
     <None Include="Uninstall.SqlDataProvider" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Documentation\Documentation.css" />
-    <Content Include="Documentation\Documentation.html" />
-    <Content Include="Documentation\logo.gif" />
     <Content Include="Module.css" />
     <Content Include="References\DotNetNuke.Modules.Html.dll" />
     <Content Include="References\EngagePublish.dll" />
