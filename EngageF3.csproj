@@ -26,7 +26,7 @@
     <DebugType>full</DebugType>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <OutputPath>..\..\bin\</OutputPath>
-    <DocumentationFile>EngageF3.xml</DocumentationFile>
+    <DocumentationFile>..\..\bin\EngageF3.xml</DocumentationFile>
     <WarningLevel>1</WarningLevel>
     <RunCodeAnalysis>true</RunCodeAnalysis>
     <CodeAnalysisRules>
@@ -38,7 +38,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <Optimize>true</Optimize>
     <OutputPath>..\..\bin\</OutputPath>
-    <DocumentationFile>LinkChecker.xml</DocumentationFile>
+    <DocumentationFile>..\..\bin\EngageF3.xml</DocumentationFile>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
@@ -146,12 +146,13 @@
     </None>
     <None Include="03.03.00.SqlDataProvider" />
     <None Include="EngageF3.Build" />
-    <None Include="EngageF3.dnn" />
+    <None Include="EngageF3.4.dnn" />
     <None Include="Migrated rules for EngageF3.ruleset" />
     <None Include="Uninstall.SqlDataProvider" />
   </ItemGroup>
   <ItemGroup>
     <CodeAnalysisDictionary Include="CustomDictionary.xml" />
+    <Content Include="Licenses\EULA-Free.htm" />
     <Content Include="Module.css" />
     <Content Include="References\DotNetNuke.dll" />
     <Content Include="References\DotNetNuke.Modules.Html.dll" />
