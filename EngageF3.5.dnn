@@ -1,6 +1,6 @@
 <dotnetnuke type="Package" version="5.0">
   <packages>
-    <package name="Engage: F3" type="Module" version="3.5.2">
+    <package name="Engage: F3" type="Module" version="03.06.00">
       <friendlyName>Engage: F3</friendlyName>
       <description>A Search and Replacement module for the DNN HTML module and Engage: Publish from Engage Software (www.engagesoftware.com)</description>
       <iconFile />
@@ -38,7 +38,7 @@
             </script>
             <script type="UnInstall">
               <name>Uninstall.SqlDataProvider</name>
-              <version>03.05.02</version>
+              <version>03.06.00</version>
             </script>
           </scripts>
         </component>

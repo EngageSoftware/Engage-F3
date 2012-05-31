@@ -149,7 +149,7 @@
     <Content Include="References\Microsoft.ApplicationBlocks.Data.dll" />
     <Content Include="References\System.Web.Extensions.Design.dll" />
     <Content Include="References\system.web.extensions.dll" />
-    <Content Include="ReleaseNotes_03.05.02.htm" />
+    <Content Include="ReleaseNotes_03.06.00.htm" />
     <Content Include="Settings.ascx" />
     <Content Include="ViewLinks.ascx" />
   </ItemGroup>
