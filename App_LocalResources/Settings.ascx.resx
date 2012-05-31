@@ -126,4 +126,10 @@
   <data name="ModuleHelp.Text" xml:space="preserve">
     <value>Testing help.</value>
   </data>
+  <data name="lblLowerTab.Text" xml:space="preserve">
+    <value>Lower Tab Limit &gt;=</value>
+  </data>
+  <data name="lblUpperTab.Text" xml:space="preserve">
+    <value>Upper Tab Limit &lt;=</value>
+  </data>
 </root>

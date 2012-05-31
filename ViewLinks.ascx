@@ -108,6 +108,7 @@
     <dnn:label ID="plHtmlReplace" runat="server" />
     <asp:TextBox ID="txtReplacementText" runat="server"></asp:TextBox>
     <asp:Button ID="btnReplace" resourcekey="btnReplace" runat="server" OnClick="btnReplace_Click" />
+    <asp:Button ID="btnReplaceEngagePublish" resourcekey="btnReplaceEngagePublish" runat="server" Text="Engage: Publish" OnClick="btnReplaceEngagePublish_Click" />
     <br />
     <asp:Label ID="lblReplacementResults" CssClass="error" runat="server" />
 </asp:panel>

@@ -178,7 +178,7 @@ namespace Engage.Dnn.F3
 
         #region Public Methods
 
-        public override DataTable GetLinks(string searchString, int portalId)
+        public override DataTable GetLinks(string searchString, int portalId, int lowerTab, int upperTab)
         {
             StringBuilder sql = new StringBuilder(128);
 
@@ -196,20 +196,25 @@ namespace Engage.Dnn.F3
             sql.Append(" join ");
             sql.Append(NamePrefix);
             sql.Append("tabs t on (t.tabid = tm.tabid)");
-
                         
             sql.Append("where ");
             sql.Append("ht.DesktopHtml collate SQL_Latin1_General_CP1_CS_AS  like '%");
             sql.Append(searchString);
             sql.Append("%' and m.PortalId = ");
             sql.Append(portalId.ToString());
-            
+            if (lowerTab > 0 && upperTab > lowerTab)
+            {
+                sql.Append(" and t.tabid >= ");
+                sql.Append(lowerTab);
+                sql.Append(" and t.tabid <= ");
+                sql.Append(upperTab);
+            }
 
             DataSet ds = SqlHelper.ExecuteDataset(ConnectionString, CommandType.Text, sql.ToString());
             return ds.Tables[0];
         }
 
-        public override DataTable GetLinks(string searchString)
+        public override DataTable GetLinks(string searchString, int lowerTab, int upperTab)
         {
             StringBuilder sql = new StringBuilder(128);
 
@@ -230,10 +235,16 @@ namespace Engage.Dnn.F3
             sql.Append("ht.DesktopHtml collate SQL_Latin1_General_CP1_CS_AS like '%");
             sql.Append(searchString);
             sql.Append("%' ");
+            if (lowerTab > 0 && upperTab > lowerTab)
+            {
+                sql.Append(" and t.tabid >= ");
+                sql.Append(lowerTab);
+                sql.Append(" and t.tabid <= ");
+                sql.Append(upperTab);
+            }
 
             DataSet ds = SqlHelper.ExecuteDataset(ConnectionString, CommandType.Text, sql.ToString());
             return ds.Tables[0];
-
         }
 
         public override void ReplaceTextHTML(int moduleId, string desktopHtml, string desktopSummary, int userId)

@@ -92,6 +92,14 @@ namespace Engage.Dnn.F3
                             chkEnablePublish.Checked = false;
                         }
                     }
+                    if (Settings.Contains("lowerTabId"))
+                    {
+                        txtLowerTab.Text = Settings["lowerTabId"].ToString();
+                    }
+                    if (Settings.Contains("upperTabId"))
+                    {
+                        txtUpperTab.Text = Settings["upperTabId"].ToString();
+                    }
 
 
                 }
@@ -118,6 +126,8 @@ namespace Engage.Dnn.F3
                 DotNetNuke.Entities.Modules.ModuleController objModules = new DotNetNuke.Entities.Modules.ModuleController();
 
                 objModules.UpdateTabModuleSetting(TabModuleId, "chkEnablePublish", chkEnablePublish.Checked.ToString());
+                objModules.UpdateTabModuleSetting(TabModuleId, "lowerTabId", txtLowerTab.Text.ToString());
+                objModules.UpdateTabModuleSetting(TabModuleId, "upperTabId", txtUpperTab.Text.ToString());
 
             }
             catch (Exception exc) //Module failed to load

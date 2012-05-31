@@ -90,8 +90,9 @@ namespace Engage.Dnn.F3
 
         #region Abstract methods
 
-        public abstract DataTable GetLinks(string searchString, int portalId);
-        public abstract DataTable GetLinks(string searchString);
+        public abstract DataTable GetLinks(string searchString, int portalId, int lowerTab, int upperTab);
+        public abstract DataTable GetLinks(string searchString, int lowerTab, int upperTab);
+
         public abstract DataTable GetPublishLinks(string searchString, int portalId);
 
         public abstract void ReplaceTextHTML(int moduleId, string desktopHtml, string desktopSummary, int userId);

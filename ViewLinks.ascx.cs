@@ -50,6 +50,7 @@ using System.Web.UI.HtmlControls;
 
 using System.Reflection;
 using DotNetNuke.Entities.Modules;
+using Engage.Dnn.Publish;
 
 
 namespace Engage.Dnn.F3
@@ -149,10 +150,35 @@ namespace Engage.Dnn.F3
 
 #endregion
 
+        private int lowerTabId = -1;
+        public int LowerTabId
+        {
+            get
+            {
+                object o = this.Settings["lowerTabId"];
+                if (o == null || !int.TryParse(o.ToString(), out this.lowerTabId)&& o!=string.Empty)
+                {
+                    this.lowerTabId = Convert.ToInt32(o);
+                }
+                return this.lowerTabId;
+            }
+        }
+
+        private int upperTabId = -1;
+        public int UpperTabId
+        {
+            get
+            {
+                object o = this.Settings["upperTabId"];
+                if (o == null || !int.TryParse(o.ToString(), out this.upperTabId) && o != string.Empty)
+                {
+                    this.upperTabId = Convert.ToInt32(o);
+                }
+                return this.upperTabId;
+            }
+        }
+
         
-
-       
-
         public string CleanupText(string text)
         {
             string returnVal = Server.HtmlEncode(text).ToString();
@@ -197,9 +223,10 @@ namespace Engage.Dnn.F3
         protected void btnEngagePublish_Click(object sender, EventArgs e)
         {
             BindPublishData(txtSearchString.Text.Trim().ToString());
-            pnlReplacement.Visible = false;
+            
             dgResults.Visible = false;
             dgPublishResults.Visible = true;
+            pnlReplacement.Visible = true;
         }
 
 
@@ -209,12 +236,12 @@ namespace Engage.Dnn.F3
 
             if (UserInfo.IsSuperUser)
             {
-                dgResults.DataSource = DataProvider.Instance().GetLinks(searchString);
+                dgResults.DataSource = DataProvider.Instance().GetLinks(searchString, LowerTabId, UpperTabId);
                 dgResults.DataBind();
             }
             else
             {
-                dgResults.DataSource = DataProvider.Instance().GetLinks(searchString, PortalId);
+                dgResults.DataSource = DataProvider.Instance().GetLinks(searchString, PortalId, LowerTabId, UpperTabId);
                 dgResults.DataBind();
             }
 
@@ -226,6 +253,7 @@ namespace Engage.Dnn.F3
             //bind the data
             dgPublishResults.DataSource = DataProvider.Instance().GetPublishLinks(searchString, PortalId);
             dgPublishResults.DataBind();
+            
 
         }
 
@@ -242,12 +270,12 @@ namespace Engage.Dnn.F3
                     DataTable dt;
                     if (UserInfo.IsSuperUser)
                     {
-                        dt = DataProvider.Instance().GetLinks(searchString);
+                        dt = DataProvider.Instance().GetLinks(searchString, LowerTabId, UpperTabId);
                         
                     }
                     else
                     {
-                        dt = DataProvider.Instance().GetLinks(searchString, PortalId);
+                        dt = DataProvider.Instance().GetLinks(searchString, PortalId, LowerTabId, UpperTabId);
                     }
 
                     foreach (DataRow dr in dt.Rows)
@@ -270,6 +298,43 @@ namespace Engage.Dnn.F3
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
+        }
+
+        protected void btnReplaceEngagePublish_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                //loop through the Text/HTML modules and start updating fields
+                string replacementString = txtReplacementText.Text.Trim();
+                string searchString = txtSearchString.Text.Trim();
+                if (replacementString != string.Empty && searchString != string.Empty)
+                {
+
+                    DataTable dt;
+                    dt = DataProvider.Instance().GetPublishLinks(searchString, PortalId);
+
+                    foreach (DataRow dr in dt.Rows)
+                    {
+                        Article a = Article.GetArticle(Convert.ToInt32(dr["ItemId"]),PortalId, true, true);
+
+                        string articleDescription = a.Description.Replace(searchString, replacementString);
+                        string articleBody = a.ArticleText.Replace(searchString, replacementString);
+                        a.ArticleText = articleBody;
+                        a.Description = articleDescription;
+                        a.Save(UserInfo.UserID);
+                    }
+                    string replacementResults = Localization.GetString("replacementResults", LocalResourceFile).ToString();
+                    lblReplacementResults.Text = String.Format(replacementResults, searchString, replacementString, dt.Rows.Count);
+                    lblReplacementResults.Visible = true;
+                    dgResults.Visible = false;
+                    dgPublishResults.Visible = false;
+                }
+            }
+            catch (Exception exc)
+            {
+                Exceptions.ProcessModuleLoadException(this, exc);
+            }
+
         }
 	}
 }
