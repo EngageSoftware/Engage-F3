@@ -7,3 +7,7 @@ IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}EngageF3_spSearchPublishContent]
     DROP PROC {databaseOwner}[{objectQualifier}EngageF3_spSearchPublishContent]
 GO
 
+
+IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}EngageF3_spSearchUniqueTextHtmlContent]', N'P') IS NOT NULL
+    DROP PROC {databaseOwner}[{objectQualifier}EngageF3_spSearchUniqueTextHtmlContent]
+GO

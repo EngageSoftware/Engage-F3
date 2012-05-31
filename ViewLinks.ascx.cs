@@ -26,6 +26,8 @@ namespace Engage.Dnn.F3
     using System.Web.UI;
     using System.Web.UI.WebControls;
     using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Host;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.Localization;
@@ -273,13 +275,21 @@ namespace Engage.Dnn.F3
         /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         private void ReplaceTextHtmlButton_Click(object sender, EventArgs e)
         {
+            // Get the initial caching level 
+            var initialCachingLevel = (int)Host.PerformanceSetting;
+
             try
             {
                 string searchValue = this.SearchTextBox.Text.Trim();
                 string replacementValue = this.ReplacementTextBox.Text.Trim();
                 if (!string.IsNullOrEmpty(searchValue) && !string.IsNullOrEmpty(replacementValue))
                 {
-                    DataTable searchResults = DataProvider.Instance.SearchTextHtmlContent(searchValue, this.SearchPortalId, this.LowerTabId, this.UpperTabId);
+                    DataTable searchResults = DataProvider.Instance.SearchUniqueTextHtmlContent(searchValue, this.SearchPortalId, this.LowerTabId, this.UpperTabId);
+
+                    // Disable caching 
+                    var hc = new HostSettingsController();
+                    hc.UpdateHostSetting("PerformanceSetting", ((int)Globals.PerformanceSettings.NoCaching).ToString());
+                    DataCache.ClearHostCache(true);
 
                     foreach (DataRow searchResultRow in searchResults.Rows)
                     {
@@ -301,6 +311,13 @@ namespace Engage.Dnn.F3
             catch (Exception exc)
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
+            }
+            finally
+            {
+                // Enable caching with 
+                // the initial caching level 
+                var hc = new HostSettingsController();
+                hc.UpdateHostSetting("PerformanceSetting", initialCachingLevel.ToString());                
             }
         }
 

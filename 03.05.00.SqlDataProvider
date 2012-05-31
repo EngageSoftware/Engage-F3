@@ -1,0 +1,35 @@
+﻿IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}EngageF3_spSearchUniqueTextHtmlContent]', N'P') IS NOT NULL
+    DROP PROC {databaseOwner}[{objectQualifier}EngageF3_spSearchUniqueTextHtmlContent]
+GO
+
+CREATE PROC {databaseOwner}[{objectQualifier}EngageF3_spSearchUniqueTextHtmlContent]
+    @searchValue nvarchar(4000),
+    @portalId int,
+    @lowerTabId int,
+    @upperTabId int
+AS
+ 
+    DECLARE @PublishedContent TABLE (ItemId int)
+    INSERT INTO @PublishedContent (ItemId)
+    SELECT ht.ItemId
+    FROM {databaseOwner}[{objectQualifier}HtmlText] ht
+    WHERE ht.IsPublished = 1 
+      AND ht.LastModifiedOnDate = (SELECT MAX(LastModifiedOnDate) FROM {databaseOwner}[{objectQualifier}HtmlText] WHERE ModuleID = ht.ModuleID AND IsPublished = 1)
+ 
+    DECLARE @UniqueModuleID TABLE (ModuleID int, TabID int, PortalID int, ModuleTitle nvarchar(512))
+    INSERT INTO @UniqueModuleID (ModuleID, TabID, PortalID, ModuleTitle)
+    SELECT ModuleID, MIN(TabID) AS TabID, PortalID, MIN(ModuleTitle) AS ModuleTitle
+    FROM {databaseOwner}[{objectQualifier}vw_Modules] 
+    GROUP BY ModuleID, PortalID
+
+    SELECT ht.ModuleID, ht.ItemID, m.TabID, ht.Content, ht.StateID, m.PortalID, m.ModuleTitle, t.TabName, p.PortalName
+    FROM {databaseOwner}[{objectQualifier}HtmlText] ht 
+     JOIN @PublishedContent pc ON (ht.ItemID = pc.ItemId)
+     JOIN @UniqueModuleID m ON (m.ModuleID = ht.ModuleID)
+     JOIN {databaseOwner}[{objectQualifier}vw_Tabs] t ON (t.TabID = m.TabID)
+     JOIN {databaseOwner}[{objectQualifier}vw_Portals] p ON (p.PortalID = t.PortalID)
+    WHERE ht.Content COLLATE SQL_Latin1_General_CP1_CS_AS LIKE '%' + REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(@searchValue, '\', '\\'), '%', '\%'), '[', '\['), ']', '\]'), '_', '\_') + '%' ESCAPE '\'
+      AND (@portalId IS NULL OR m.PortalID = @portalId)
+      AND (@lowerTabId IS NULL OR t.TabID >= @lowerTabId)
+      AND (@upperTabId IS NULL OR t.TabID <= @upperTabId)
+GO

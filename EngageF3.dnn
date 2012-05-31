@@ -6,7 +6,7 @@
       <foldername>EngageF3</foldername>
       <modulename>Engage: F3</modulename>
       <description>A Search and Replacement module for the DNN HTML module and Engage: Publish from Engage Software (www.engagesoftware.com)</description>
-      <version>3.4.0</version>
+      <version>3.5.0</version>
       <businesscontrollerclass></businesscontrollerclass>
       <resourcefile>Resources.zip</resourcefile>
       <modules>
@@ -38,6 +38,9 @@
         </file>
         <file>
           <name>03.03.00.SqlDataProvider</name>
+        </file>
+        <file>
+          <name>03.05.00.SqlDataProvider</name>
         </file>
         <file>
           <name>Uninstall.SqlDataProvider</name>

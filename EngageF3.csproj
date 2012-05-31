@@ -133,6 +133,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="03.01.00.SqlDataProvider" />
+    <None Include="03.05.00.SqlDataProvider" />
     <None Include="App_LocalResources\Settings.ascx.resx">
       <SubType>Designer</SubType>
     </None>

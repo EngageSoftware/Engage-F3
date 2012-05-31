@@ -127,5 +127,19 @@ namespace Engage.Dnn.F3
                     new SqlParameter("@upperTabId", upperTab));
             return searchResults.Tables[0];
         }
+
+        public override DataTable SearchUniqueTextHtmlContent(string searchValue, int? portalId, int? lowerTab, int? upperTab)
+        {
+            DataSet searchResults = SqlHelper.ExecuteDataset(
+                    this.ConnectionString,
+                    CommandType.StoredProcedure,
+                    this.NamePrefix + "spSearchUniqueTextHtmlContent",
+                    new SqlParameter("@searchValue", HttpUtility.HtmlEncode(searchValue)),
+                    new SqlParameter("@portalId", portalId),
+                    new SqlParameter("@lowerTabId", lowerTab),
+                    new SqlParameter("@upperTabId", upperTab));
+            return searchResults.Tables[0];
+        }
+
     }
 }

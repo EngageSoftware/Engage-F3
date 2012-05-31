@@ -53,6 +53,8 @@ namespace Engage.Dnn.F3
 
         public abstract DataTable SearchTextHtmlContent(string searchValue, int? portalId, int? lowerTab, int? upperTab);
 
+        public abstract DataTable SearchUniqueTextHtmlContent(string searchValue, int? portalId, int? lowerTab, int? upperTab);
+
         public abstract DataTable SearchPublishContent(string searchValue, int? portalId);
 
         /// <summary>
