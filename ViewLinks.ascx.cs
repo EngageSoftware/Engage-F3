@@ -175,12 +175,13 @@ namespace Engage.Dnn.F3
         /// <param name="searchValue">The search value.</param>
         /// <param name="replacementValue">The replacement value.</param>
         /// <param name="moduleId">The module id.</param>
+        /// <param name="tabId">The tab id.</param>
         /// <param name="portalId">The portal id.</param>
         /// <param name="content">The content.</param>
-        private static void CreateNewTextHtmlVersion(string searchValue, string replacementValue, int moduleId, int portalId, string content)
+        private static void CreateNewTextHtmlVersion(string searchValue, string replacementValue, int moduleId, int tabId, int portalId, string content)
         {
             var htmlTextController = CreateHtmlTextController();
-            var workflowId = htmlTextController.GetWorkflowId(moduleId, portalId);
+            var workflowId = htmlTextController.GetWorkflowId(moduleId, tabId, portalId);
             var htmlInfo = htmlTextController.GetTopHtmlText(moduleId, false, workflowId) ?? htmlTextController.CreateNewHtmlTextInfo();
             htmlInfo.ModuleId = moduleId;
             htmlInfo.Content = content.Replace(HttpUtility.HtmlEncode(searchValue), HttpUtility.HtmlEncode(replacementValue));
@@ -282,10 +283,11 @@ namespace Engage.Dnn.F3
                     foreach (DataRow searchResultRow in searchResults.Rows)
                     {
                         var moduleId = (int)searchResultRow["ModuleID"];
+                        var tabId = (int)searchResultRow["TabID"];
                         var portalId = (int)searchResultRow["PortalID"];
                         var content = searchResultRow["Content"].ToString();
 
-                        CreateNewTextHtmlVersion(searchValue, replacementValue, moduleId, portalId, content);
+                        CreateNewTextHtmlVersion(searchValue, replacementValue, moduleId, tabId, portalId, content);
                     }
 
                     string replacementResults = Localization.GetString("TextHtmlReplacementResults.Format", this.LocalResourceFile);

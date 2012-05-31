@@ -16,7 +16,7 @@ namespace Engage.Dnn.F3
     /// </summary>
     public interface IHtmlTextModuleController
     {
-        int GetWorkflowId(int moduleId, int portalId);
+        int GetWorkflowId(int moduleId, int tabId, int portalId);
 
         IHtmlTextInfo GetTopHtmlText(int moduleId, bool isPublished, int workflowId);
 

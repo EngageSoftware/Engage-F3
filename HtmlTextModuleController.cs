@@ -12,6 +12,7 @@
 namespace Engage.Dnn.F3
 {
     using System;
+    using System.Collections.Generic;
     using System.Reflection;
     using DotNetNuke.Framework;
 
@@ -35,9 +36,30 @@ namespace Engage.Dnn.F3
             this.workflowStateController = Reflection.CreateInstance(WorkflowStateControllerType);
         }
 
-        public int GetWorkflowId(int moduleId, int portalId)
+        public int GetWorkflowId(int moduleId, int tabId, int portalId)
         {
-            return (int)HtmlTextControllerType.InvokeMember("GetWorkflowID", BindingFlags.InvokeMethod, null, this.htmlTextController, new object[] { moduleId, portalId }, null);
+            var getWorkflowId = HtmlTextControllerType.GetMethod("GetWorkflowID");
+            if (getWorkflowId != null)
+            {
+                // DNN 5.2
+                return (int)getWorkflowId.Invoke(
+                    this.htmlTextController,
+                    BindingFlags.InvokeMethod,
+                    null,
+                    new object[] { moduleId, portalId },
+                    null);
+            }
+
+            // DNN 5.4
+            var workflowPair = (KeyValuePair<string, int>)HtmlTextControllerType.InvokeMember(
+                "GetWorkflow",
+                BindingFlags.InvokeMethod,
+                null,
+                this.htmlTextController,
+                new object[] { moduleId, tabId, portalId },
+                null);
+
+            return workflowPair.Value;
         }
 
         public IHtmlTextInfo GetTopHtmlText(int moduleId, bool isPublished, int workflowId)
