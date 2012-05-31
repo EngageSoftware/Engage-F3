@@ -167,7 +167,7 @@
     <value>Replace Text/HTML Values:</value>
   </data>
   <data name="replacementResults.Text" xml:space="preserve">
-    <value>Replaced {0} with {1} in {2} modules.</value>
+    <value>Replaced "&lt;em&gt;{0}&lt;/em&gt;" with "&lt;em&gt;{1}&lt;/em&gt;" in {2} modules.</value>
   </data>
   <data name="btnReplaceEngagePublish.Text" xml:space="preserve">
     <value>Replace Engage:Publish Values</value>
@@ -182,7 +182,7 @@
     <value>View Article (opens in new window)</value>
   </data>
   <data name="TextHtmlReplacementResults.Format" xml:space="preserve">
-    <value>Created a new version of content with &lt;em&gt;{0}&lt;/em&gt; replaced with &lt;em&gt;{1}&lt;/em&gt; for {2} modules.  You may need to publish the change if you are not using a Direct Publish workflow.</value>
+    <value>Created a new version of content with "&lt;em&gt;{0}&lt;/em&gt;" replaced with "&lt;em&gt;{1}&lt;/em&gt;" for {2} modules.  You may need to publish the change if you are not using a Direct Publish workflow.</value>
     <comment>{0} is search text
 {1} is replacement text
 {2} is number of modules</comment>

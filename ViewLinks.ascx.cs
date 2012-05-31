@@ -237,30 +237,34 @@ namespace Engage.Dnn.F3
         {
             try
             {
-                string searchValue = this.SearchTextBox.Text.Trim();
-                string replacementValue = this.ReplacementTextBox.Text.Trim();
-                if (!string.IsNullOrEmpty(searchValue) && !string.IsNullOrEmpty(replacementValue))
+                var searchValue = this.SearchTextBox.Text.Trim();
+                var replacementValue = this.ReplacementTextBox.Text;
+                if (string.IsNullOrEmpty(searchValue))
                 {
-                    DataTable searchResults = DataProvider.Instance.SearchPublishContent(searchValue, this.SearchPortalId);
-
-                    foreach (DataRow resultRow in searchResults.Rows)
-                    {
-                        Article article = Article.GetArticle((int)resultRow["ItemId"], this.PortalId, true, true, true);
-
-                        string articleDescription = article.Description.Replace(searchValue, replacementValue);
-                        string articleBody = article.ArticleText.Replace(searchValue, replacementValue);
-                        article.ArticleText = articleBody;
-                        article.Description = articleDescription;
-
-                        article.Save(this.UserInfo.UserID);
-                    }
-
-                    string replacementResults = Localization.GetString("replacementResults", this.LocalResourceFile);
-                    this.ReplacementResultsLabel.Text = string.Format(CultureInfo.CurrentCulture, replacementResults, searchValue, replacementValue, searchResults.Rows.Count);
-                    this.ReplacementResultsLabel.Visible = true;
-                    this.ResultsGrid.Visible = false;
-                    this.PublishResultsGrid.Visible = false;
+                    return;
                 }
+
+                DataTable searchResults = DataProvider.Instance.SearchPublishContent(searchValue, this.SearchPortalId);
+
+                foreach (DataRow resultRow in searchResults.Rows)
+                {
+                    var article = Article.GetArticle((int)resultRow["ItemId"], this.PortalId, true, true, true);
+
+                    article.ArticleText = article.ArticleText.Replace(searchValue, replacementValue);
+                    article.Description = article.Description.Replace(searchValue, replacementValue);
+
+                    article.Save(this.UserInfo.UserID);
+                }
+
+                this.ReplacementResultsLabel.Text = string.Format(
+                    CultureInfo.CurrentCulture,
+                    Localization.GetString("replacementResults", this.LocalResourceFile),
+                    searchValue,
+                    replacementValue,
+                    searchResults.Rows.Count);
+                this.ReplacementResultsLabel.Visible = true;
+                this.ResultsGrid.Visible = false;
+                this.PublishResultsGrid.Visible = false;
             }
             catch (Exception exc)
             {
@@ -280,33 +284,38 @@ namespace Engage.Dnn.F3
 
             try
             {
-                string searchValue = this.SearchTextBox.Text.Trim();
-                string replacementValue = this.ReplacementTextBox.Text.Trim();
-                if (!string.IsNullOrEmpty(searchValue) && !string.IsNullOrEmpty(replacementValue))
+                var searchValue = this.SearchTextBox.Text.Trim();
+                var replacementValue = this.ReplacementTextBox.Text;
+                if (string.IsNullOrEmpty(searchValue))
                 {
-                    DataTable searchResults = DataProvider.Instance.SearchUniqueTextHtmlContent(searchValue, this.SearchPortalId, this.LowerTabId, this.UpperTabId);
-
-                    // Disable caching 
-                    var hc = new HostSettingsController();
-                    hc.UpdateHostSetting("PerformanceSetting", ((int)Globals.PerformanceSettings.NoCaching).ToString(CultureInfo.InvariantCulture));
-                    DataCache.ClearHostCache(true);
-
-                    foreach (DataRow searchResultRow in searchResults.Rows)
-                    {
-                        var moduleId = (int)searchResultRow["ModuleID"];
-                        var tabId = (int)searchResultRow["TabID"];
-                        var portalId = (int)searchResultRow["PortalID"];
-                        var content = searchResultRow["Content"].ToString();
-
-                        CreateNewTextHtmlVersion(searchValue, replacementValue, moduleId, tabId, portalId, content);
-                    }
-
-                    string replacementResults = Localization.GetString("TextHtmlReplacementResults.Format", this.LocalResourceFile);
-                    this.ReplacementResultsLabel.Text = string.Format(CultureInfo.CurrentCulture, replacementResults, searchValue, replacementValue, searchResults.Rows.Count);
-                    this.ReplacementResultsLabel.Visible = true;
-                    this.ResultsGrid.Visible = false;
-                    this.PublishResultsGrid.Visible = false;
+                    return;
                 }
+
+                DataTable searchResults = DataProvider.Instance.SearchUniqueTextHtmlContent(searchValue, this.SearchPortalId, this.LowerTabId, this.UpperTabId);
+
+                // Disable caching 
+                new HostSettingsController().UpdateHostSetting("PerformanceSetting", ((int)Globals.PerformanceSettings.NoCaching).ToString(CultureInfo.InvariantCulture));
+                DataCache.ClearHostCache(true);
+
+                foreach (DataRow searchResultRow in searchResults.Rows)
+                {
+                    var moduleId = (int)searchResultRow["ModuleID"];
+                    var tabId = (int)searchResultRow["TabID"];
+                    var portalId = (int)searchResultRow["PortalID"];
+                    var content = searchResultRow["Content"].ToString();
+
+                    CreateNewTextHtmlVersion(searchValue, replacementValue, moduleId, tabId, portalId, content);
+                }
+
+                this.ReplacementResultsLabel.Text = string.Format(
+                    CultureInfo.CurrentCulture,
+                    Localization.GetString("TextHtmlReplacementResults.Format", this.LocalResourceFile),
+                    searchValue,
+                    replacementValue,
+                    searchResults.Rows.Count);
+                this.ReplacementResultsLabel.Visible = true;
+                this.ResultsGrid.Visible = false;
+                this.PublishResultsGrid.Visible = false;
             }
             catch (Exception exc)
             {
@@ -316,8 +325,7 @@ namespace Engage.Dnn.F3
             {
                 // Enable caching with 
                 // the initial caching level 
-                var hc = new HostSettingsController();
-                hc.UpdateHostSetting("PerformanceSetting", initialCachingLevel.ToString(CultureInfo.InvariantCulture));                
+                new HostSettingsController().UpdateHostSetting("PerformanceSetting", initialCachingLevel.ToString(CultureInfo.InvariantCulture));                
             }
         }
 
