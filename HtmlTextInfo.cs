@@ -21,7 +21,7 @@ namespace Engage.Dnn.F3
     /// <remarks>Need to use reflection because type could be in <c>DotNetNuke.Modules.Html</c> assembly or in <c>DotNetNuke.Professional.HtmlPro</c> assembly.</remarks>
     public class HtmlTextInfo : IHtmlTextInfo
     {
-        private static readonly Type HtmlTextInfoType = Reflection.CreateType("DotNetNuke.Modules.Html.HtmlTextInfo");
+        private static readonly Type HtmlTextInfoType = Reflection.CreateType("DotNetNuke.Modules.Html.HtmlTextInfo") ?? Reflection.CreateType("DotNetNuke.Modules.HtmlPro.HtmlTextInfo");
 
         /// <summary>
         /// Initializes a new instance of the <see cref="HtmlTextInfo"/> class.
