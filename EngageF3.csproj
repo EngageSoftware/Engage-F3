@@ -40,8 +40,14 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\bin\DotNetNuke.dll</HintPath>
     </Reference>
-    <Reference Include="DotNetNuke.Modules.Html, Version=5.1.2.0, Culture=neutral, processorArchitecture=MSIL" />
-    <Reference Include="EngagePublish, Version=5.4.0.39854, Culture=neutral, processorArchitecture=MSIL" />
+    <Reference Include="DotNetNuke.Modules.Html, Version=5.1.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="EngagePublish, Version=5.4.0.39854, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="Microsoft.ApplicationBlocks.Data, Version=2.0.0.0, Culture=neutral">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\bin\Microsoft.ApplicationBlocks.Data.dll</HintPath>
@@ -126,6 +132,8 @@
     <Content Include="Documentation\Documentation.html" />
     <Content Include="Documentation\logo.gif" />
     <Content Include="Module.css" />
+    <Content Include="References\DotNetNuke.Modules.Html.dll" />
+    <Content Include="References\EngagePublish.dll" />
     <Content Include="Settings.ascx" />
     <Content Include="ViewLinks.ascx" />
   </ItemGroup>
@@ -136,16 +144,7 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>True</UseIIS>
-          <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>4825</DevelopmentServerPort>
-          <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost/DNN5/desktopmodules/engagef3</IISUrl>
-          <NTLMAuthentication>False</NTLMAuthentication>
-          <UseCustomServer>False</UseCustomServer>
-          <CustomServerUrl>
-          </CustomServerUrl>
-          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+          <SaveServerSettingsInUserFile>True</SaveServerSettingsInUserFile>
         </WebProjectProperties>
       </FlavorProperties>
     </VisualStudio>
