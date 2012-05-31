@@ -138,7 +138,8 @@ namespace Engage.Dnn.F3
         {
             var sql = new StringBuilder(128);
 
-            sql.Append("select ht.ModuleId, tm.TabId, ht.Content, m.ModuleTitle, t.TabName ");
+            //sql.Append("select ht.ModuleId, tm.TabId, ht.Content, m.ModuleTitle, t.TabName ");
+            sql.Append("select ht.ModuleId, ht.ItemId, tm.TabId, ht.Content, ht.StateID, ht.IsPublished, m.ModuleTitle, t.TabName ");
             sql.Append("from ");
             sql.Append(NamePrefix);
             sql.Append("htmltext ht ");
