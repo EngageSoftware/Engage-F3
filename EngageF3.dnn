@@ -6,7 +6,7 @@
       <foldername>EngageF3</foldername>
       <modulename>Engage: F3</modulename>
       <description>A Search and Replacement module for the DNN HTML module and Engage: Publish from Engage Software (www.engagesoftware.com)</description>
-      <version>3.5.0</version>
+      <version>3.5.1</version>
       <businesscontrollerclass></businesscontrollerclass>
       <resourcefile>Resources.zip</resourcefile>
       <modules>
