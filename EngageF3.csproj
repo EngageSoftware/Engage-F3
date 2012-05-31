@@ -64,6 +64,9 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Web" />
+    <Reference Include="system.web.extensions, Version=1.0.61025.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>False</Private>
+    </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Web.Services" />
@@ -148,6 +151,8 @@
     <Content Include="References\DotNetNuke.dll" />
     <Content Include="References\DotNetNuke.Modules.Html.dll" />
     <Content Include="References\EngagePublish.dll" />
+    <Content Include="References\Microsoft.ApplicationBlocks.Data.dll" />
+    <Content Include="References\system.web.extensions.dll" />
     <Content Include="Settings.ascx" />
     <Content Include="ViewLinks.ascx" />
   </ItemGroup>
