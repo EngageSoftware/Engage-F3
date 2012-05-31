@@ -7,7 +7,7 @@
         </p>
     </div>
     <dnn:label ResourceKey="lblSearchString" runat="server"/>
-    <asp:TextBox ID="SearchStringTextBox" runat="server"/>
+    <asp:TextBox ID="SearchTextBox" runat="server"/>
     <asp:Button ID="SearchTextHtmlButton" resourcekey="btnSearch" runat="server" Text="Text/HTML" />
     <asp:Button ID="SearchPublishButton" resourcekey="btnEngagePublish" runat="server" Text="Engage: Publish" />
     <asp:DataGrid ID="ResultsGrid" runat="server" AutoGenerateColumns="false" CssClass="DataGrid_Container" GridLines="None">
@@ -61,7 +61,7 @@
                     <asp:Label resourcekey="lblEditHeader" runat="server"/>
                 </HeaderTemplate>
                 <ItemTemplate>
-                    <asp:HyperLink Target="_blank" NavigateUrl='<%# this.GetTextHtmlModuleEditLink((int)Eval("ModuleId"), (int)Eval("TabId"))%>' resourcekey="lnkEditLink" runat="server"/>
+                    <asp:HyperLink Target="_blank" NavigateUrl='<%# GetTextHtmlModuleEditLink((int)Eval("ModuleId"), (int)Eval("TabId"))%>' resourcekey="lnkEditLink" runat="server"/>
                 </ItemTemplate>
             </asp:TemplateColumn>
         </Columns>
@@ -101,7 +101,7 @@
                     <asp:Label resourcekey="lblEditPublishHeader" runat="server"/>
                 </HeaderTemplate>
                 <ItemTemplate>
-                    <asp:HyperLink Target="_blank" NavigateUrl='<%# this.GetPublishViewLink((int)Eval("ItemID"))%>' resourcekey="lnkEditLink" runat="server"/>
+                    <asp:HyperLink Target="_blank" NavigateUrl='<%# GetPublishViewLink((int)Eval("ItemID"))%>' resourcekey="lnkEditLink" runat="server"/>
                 </ItemTemplate>
             </asp:TemplateColumn>
         </Columns>

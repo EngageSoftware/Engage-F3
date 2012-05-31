@@ -28,6 +28,7 @@
     <DocumentationFile>EngageF3.xml</DocumentationFile>
     <WarningLevel>1</WarningLevel>
     <RunCodeAnalysis>true</RunCodeAnalysis>
+    <CodeAnalysisRules>-Microsoft.Design#CA1031;-Microsoft.Design#CA1054;-Microsoft.Design#CA1056;-Microsoft.Design#CA1055</CodeAnalysisRules>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -129,6 +130,7 @@
     <None Include="Uninstall.SqlDataProvider" />
   </ItemGroup>
   <ItemGroup>
+    <CodeAnalysisDictionary Include="CustomDictionary.xml" />
     <Content Include="Module.css" />
     <Content Include="References\DotNetNuke.Modules.Html.dll" />
     <Content Include="References\EngagePublish.dll" />

@@ -14,13 +14,13 @@ namespace Engage.Dnn.F3 {
     public partial class ViewLinks {
         
         /// <summary>
-        /// SearchStringTextBox control.
+        /// SearchTextBox control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox SearchStringTextBox;
+        protected global::System.Web.UI.WebControls.TextBox SearchTextBox;
         
         /// <summary>
         /// SearchTextHtmlButton control.

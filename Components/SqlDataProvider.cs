@@ -19,7 +19,9 @@
 
 namespace Engage.Dnn.F3
 {
+    using System;
     using System.Data;
+    using System.Data.SqlClient;
     using System.Text;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Framework.Providers;
@@ -49,7 +51,7 @@ namespace Engage.Dnn.F3
             // Get Connection string from web.config
             this.ConnectionString = Config.GetConnectionString();
 
-            if (this.ConnectionString == string.Empty)
+            if (string.IsNullOrEmpty(this.ConnectionString))
             {
                 // Use connection string specified in provider
                 this.ConnectionString = objProvider.Attributes["connectionString"];
@@ -58,13 +60,13 @@ namespace Engage.Dnn.F3
             this.ProviderPath = objProvider.Attributes["providerPath"];
 
             this.ObjectQualifier = objProvider.Attributes["objectQualifier"];
-            if (this.ObjectQualifier != string.Empty & this.ObjectQualifier.EndsWith("_") == false)
+            if (!string.IsNullOrEmpty(this.ObjectQualifier) && !this.ObjectQualifier.EndsWith("_", StringComparison.Ordinal))
             {
                 this.ObjectQualifier += "_";
             }
 
             this.DatabaseOwner = objProvider.Attributes["databaseOwner"];
-            if (this.DatabaseOwner != string.Empty & this.DatabaseOwner.EndsWith(".") == false)
+            if (!string.IsNullOrEmpty(this.DatabaseOwner) && !this.DatabaseOwner.EndsWith(".", StringComparison.Ordinal))
             {
                 this.DatabaseOwner += ".";
             }
@@ -102,69 +104,67 @@ namespace Engage.Dnn.F3
             private set;
         }
 
-        public override DataTable GetLinks(string searchString, int portalId, int lowerTab, int upperTab)
+        public override DataTable GetLinks(string searchValue, int portalId, int lowerTab, int upperTab)
         {
             var sql = new StringBuilder(128);
 
-            // sql.Append("select ht.ModuleId, tm.TabId, ht.Content, m.ModuleTitle, t.TabName ");
-            sql.Append("select ht.ModuleId, ht.ItemId, tm.TabId, ht.Content, ht.StateID, ht.IsPublished, m.ModuleTitle, t.TabName ");
-            sql.Append("from ");
+            sql.Append("SELECT ht.ModuleId, ht.ItemId, tm.TabId, ht.Content, ht.StateID, ht.IsPublished, m.ModuleTitle, t.TabName ");
+            sql.Append("FROM ");
             sql.Append(this.NamePrefix);
             sql.Append("htmltext ht ");
-            sql.Append(" join ");
+            sql.Append(" JOIN ");
             sql.Append(this.NamePrefix);
-            sql.Append("tabmodules tm on (tm.moduleid = ht.moduleid)");
-            sql.Append(" join ");
+            sql.Append("tabmodules tm ON (tm.moduleid = ht.moduleid)");
+            sql.Append(" JOIN ");
             sql.Append(this.NamePrefix);
-            sql.Append("modules m on (m.moduleid = tm.moduleid)");
+            sql.Append("modules m ON (m.moduleid = tm.moduleid)");
 
-            sql.Append(" join ");
+            sql.Append(" JOIN ");
             sql.Append(this.NamePrefix);
-            sql.Append("tabs t on (t.tabid = tm.tabid)");
+            sql.Append("tabs t ON (t.tabid = tm.tabid)");
 
-            sql.Append("where ");
-            sql.Append("ht.Content collate SQL_Latin1_General_CP1_CS_AS  like '%");
-            sql.Append(searchString);
-            sql.Append("%' and m.PortalId = ");
-            sql.Append(portalId.ToString());
+            sql.Append("WHERE ");
+            sql.Append("ht.Content COLLATE SQL_Latin1_General_CP1_CS_AS LIKE '%");
+            sql.Append(searchValue);
+            sql.Append("%' AND m.PortalId = @portalId");
             if (lowerTab > 0 && upperTab > lowerTab)
             {
-                sql.Append(" and t.tabid >= ");
+                sql.Append(" AND t.tabid >= ");
                 sql.Append(lowerTab);
-                sql.Append(" and t.tabid <= ");
+                sql.Append(" AND t.tabid <= ");
                 sql.Append(upperTab);
             }
 
-            DataSet ds = SqlHelper.ExecuteDataset(this.ConnectionString, CommandType.Text, sql.ToString());
+            DataSet ds = SqlHelper.ExecuteDataset(this.ConnectionString, CommandType.Text, sql.ToString(), new SqlParameter("@portalId", portalId));
             return ds.Tables[0];
         }
 
-        public override DataTable GetLinks(string searchString, int lowerTab, int upperTab)
+        public override DataTable GetLinks(string searchValue, int lowerTab, int upperTab)
         {
             var sql = new StringBuilder(128);
 
-            sql.Append("select ht.ModuleId, ht.ItemId, tm.TabId, ht.Content, ht.StateID, ht.IsPublished, m.ModuleTitle, t.TabName ");
-            sql.Append("from ");
+            sql.Append("SELECT ht.ModuleId, ht.ItemId, tm.TabId, ht.Content, ht.StateID, ht.IsPublished, m.ModuleTitle, t.TabName ");
+            sql.Append("FROM ");
             sql.Append(this.NamePrefix);
             sql.Append("htmltext ht ");
-            sql.Append(" join ");
+            sql.Append(" JOIN ");
             sql.Append(this.NamePrefix);
-            sql.Append("tabmodules tm on (tm.moduleid = ht.moduleid)");
-            sql.Append(" join ");
+            sql.Append("tabmodules tm ON (tm.moduleid = ht.moduleid)");
+            sql.Append(" JOIN ");
             sql.Append(this.ObjectQualifier);
-            sql.Append("modules m on (m.moduleid = tm.moduleid)");
-            sql.Append(" join ");
+            sql.Append("modules m ON (m.moduleid = tm.moduleid)");
+            sql.Append(" JOIN ");
             sql.Append(this.NamePrefix);
-            sql.Append("tabs t on (t.tabid = tm.tabid)");
-            sql.Append("where ");
-            sql.Append("ht.Content collate SQL_Latin1_General_CP1_CS_AS like '%");
-            sql.Append(searchString);
+            sql.Append("tabs t ON (t.tabid = tm.tabid)");
+            sql.Append("WHERE ");
+            sql.Append("ht.Content COLLATE SQL_Latin1_General_CP1_CS_AS LIKE '%");
+            sql.Append(searchValue);
             sql.Append("%' ");
             if (lowerTab > 0 && upperTab > lowerTab)
             {
-                sql.Append(" and t.tabid >= ");
+                sql.Append(" AND t.tabid >= ");
                 sql.Append(lowerTab);
-                sql.Append(" and t.tabid <= ");
+                sql.Append(" AND t.tabid <= ");
                 sql.Append(upperTab);
             }
 
@@ -172,32 +172,29 @@ namespace Engage.Dnn.F3
             return ds.Tables[0];
         }
 
-        // public abstract DataTable GetPublishLinks(string searchString, int portalId);
-        public override DataTable GetPublishLinks(string searchString, int portalId)
+        public override DataTable GetPublishLinks(string searchValue, int portalId)
         {
             var sql = new StringBuilder(128);
 
-            sql.Append("select va.name, va.ItemId, va.articletext, va.displaytabid, t.TabName ");
-            sql.Append("from ");
+            sql.Append("SELECT va.name, va.ItemId, va.articletext, va.displaytabid, t.TabName ");
+            sql.Append("FROM ");
             sql.Append(this.ObjectQualifier);
             sql.Append("publish_vwarticles va ");
-            sql.Append(" join ");
+            sql.Append(" JOIN ");
             sql.Append(this.ObjectQualifier);
-            sql.Append("tabs t on t.tabid = va.displaytabid ");
+            sql.Append("tabs t ON t.tabid = va.displaytabid ");
 
-            sql.Append(" where articletext collate SQL_Latin1_General_CP1_CS_AS like '%");
-            sql.Append(searchString);
-            sql.Append("%' and va.IsCurrentVersion=1 and va.PortalId = ");
-            sql.Append(portalId.ToString());
+            sql.Append(" WHERE articletext COLLATE SQL_Latin1_General_CP1_CS_AS LIKE '%");
+            sql.Append(searchValue);
+            sql.Append("%' AND va.IsCurrentVersion=1 AND va.PortalId = @portalId");
 
-            DataSet ds = SqlHelper.ExecuteDataset(this.ConnectionString, CommandType.Text, sql.ToString());
+            DataSet ds = SqlHelper.ExecuteDataset(this.ConnectionString, CommandType.Text, sql.ToString(), new SqlParameter("@portalId", portalId));
             return ds.Tables[0];
         }
 
-        public override void ReplaceTextHTML(int itemId, string content, int stateId, bool isPublished, int userId)
+        public override void ReplaceTextHtml(int itemId, string content, int stateId, bool isPublished, int userId)
         {
-            SqlHelper.ExecuteNonQuery(
-                    this.ConnectionString, this.DatabaseOwner + this.ObjectQualifier + "UpdateHtmlText", itemId, content, stateId, isPublished, userId);
+            SqlHelper.ExecuteNonQuery(this.ConnectionString, this.DatabaseOwner + this.ObjectQualifier + "UpdateHtmlText", itemId, content, stateId, isPublished, userId);
         }
     }
 }

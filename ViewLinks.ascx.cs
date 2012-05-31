@@ -109,7 +109,7 @@ namespace Engage.Dnn.F3
             }
         }
 
-        public string CleanupText(string text)
+        protected static string CleanupText(string text)
         {
             string encodedText = HttpUtility.HtmlEncode(text);
             if (encodedText.Length > 500)
@@ -120,35 +120,35 @@ namespace Engage.Dnn.F3
             return encodedText;
         }
 
-        public string GetTextHtmlModuleEditLink(int moduleId, int tabid)
-        {
-            return Globals.NavigateURL(tabid, "edit", "&mid=" + moduleId);
-        }
-
-        public string GetPublishViewLink(int itemId)
+        protected static string GetPublishViewLink(int itemId)
         {
             return ApplicationUrl + "/desktopmodules/engagepublish/itemlink.aspx?itemId=" + itemId;
         }
 
-        protected void BindTextHtmlData(string searchString)
+        protected static string GetTextHtmlModuleEditLink(int moduleId, int tabId)
+        {
+            return Globals.NavigateURL(tabId, "edit", "&mid=" + moduleId);
+        }
+
+        protected void BindPublishData(string searchValue)
+        {
+            // bind the data
+            this.PublishResultsGrid.DataSource = DataProvider.Instance.GetPublishLinks(searchValue, this.PortalId);
+            this.PublishResultsGrid.DataBind();
+        }
+
+        protected void BindTextHtmlData(string searchValue)
         {
             if (this.UserInfo.IsSuperUser)
             {
-                this.ResultsGrid.DataSource = DataProvider.Instance.GetLinks(searchString, this.LowerTabId, this.UpperTabId);
+                this.ResultsGrid.DataSource = DataProvider.Instance.GetLinks(searchValue, this.LowerTabId, this.UpperTabId);
                 this.ResultsGrid.DataBind();
             }
             else
             {
-                this.ResultsGrid.DataSource = DataProvider.Instance.GetLinks(searchString, this.PortalId, this.LowerTabId, this.UpperTabId);
+                this.ResultsGrid.DataSource = DataProvider.Instance.GetLinks(searchValue, this.PortalId, this.LowerTabId, this.UpperTabId);
                 this.ResultsGrid.DataBind();
             }
-        }
-
-        protected void BindPublishData(string searchString)
-        {
-            // bind the data
-            this.PublishResultsGrid.DataSource = DataProvider.Instance.GetPublishLinks(searchString, this.PortalId);
-            this.PublishResultsGrid.DataBind();
         }
 
         /// <summary>
@@ -175,7 +175,7 @@ namespace Engage.Dnn.F3
             try
             {
                 this.SearchPublishButton.Visible = this.Settings.Contains("chkEnablePublish")
-                                                   && Convert.ToBoolean(this.Settings["chkEnablePublish"].ToString());
+                                                   && bool.Parse(this.Settings["chkEnablePublish"].ToString());
             }
             catch (Exception exc)
             {
@@ -193,25 +193,25 @@ namespace Engage.Dnn.F3
         {
             try
             {
-                string replacementString = this.ReplacementTextBox.Text.Trim();
-                string searchString = this.SearchStringTextBox.Text.Trim();
-                if (replacementString != string.Empty && searchString != string.Empty)
+                string searchValue = this.SearchTextBox.Text.Trim();
+                string replacementValue = this.ReplacementTextBox.Text.Trim();
+                if (!string.IsNullOrEmpty(searchValue) && !string.IsNullOrEmpty(replacementValue))
                 {
-                    DataTable dt = DataProvider.Instance.GetPublishLinks(searchString, this.PortalId);
+                    DataTable dt = DataProvider.Instance.GetPublishLinks(searchValue, this.PortalId);
 
                     foreach (DataRow dr in dt.Rows)
                     {
-                        Article article = Article.GetArticle(Convert.ToInt32(dr["ItemId"]), this.PortalId, true, true);
+                        Article article = Article.GetArticle((int)dr["ItemId"], this.PortalId, true, true);
 
-                        string articleDescription = article.Description.Replace(searchString, replacementString);
-                        string articleBody = article.ArticleText.Replace(searchString, replacementString);
+                        string articleDescription = article.Description.Replace(searchValue, replacementValue);
+                        string articleBody = article.ArticleText.Replace(searchValue, replacementValue);
                         article.ArticleText = articleBody;
                         article.Description = articleDescription;
                         article.Save(this.UserInfo.UserID);
                     }
 
                     string replacementResults = Localization.GetString("replacementResults", this.LocalResourceFile);
-                    this.ReplacementResultsLabel.Text = String.Format(replacementResults, searchString, replacementString, dt.Rows.Count);
+                    this.ReplacementResultsLabel.Text = string.Format(CultureInfo.CurrentCulture, replacementResults, searchValue, replacementValue, dt.Rows.Count);
                     this.ReplacementResultsLabel.Visible = true;
                     this.ResultsGrid.Visible = false;
                     this.PublishResultsGrid.Visible = false;
@@ -232,28 +232,27 @@ namespace Engage.Dnn.F3
         {
             try
             {
-                // loop through the Text/HTML modules and start updating fields
-                string replacementString = this.ReplacementTextBox.Text.Trim();
-                string searchString = this.SearchStringTextBox.Text.Trim();
-                if (replacementString != string.Empty && searchString != string.Empty)
+                string searchValue = this.SearchTextBox.Text.Trim();
+                string replacementValue = this.ReplacementTextBox.Text.Trim();
+                if (!string.IsNullOrEmpty(searchValue) && !string.IsNullOrEmpty(replacementValue))
                 {
                     DataTable dt = this.UserInfo.IsSuperUser
-                                           ? DataProvider.Instance.GetLinks(searchString, this.LowerTabId, this.UpperTabId)
-                                           : DataProvider.Instance.GetLinks(searchString, this.PortalId, this.LowerTabId, this.UpperTabId);
+                                           ? DataProvider.Instance.GetLinks(searchValue, this.LowerTabId, this.UpperTabId)
+                                           : DataProvider.Instance.GetLinks(searchValue, this.PortalId, this.LowerTabId, this.UpperTabId);
 
                     foreach (DataRow dr in dt.Rows)
                     {
-                        int itemId = Convert.ToInt32(dr["ItemId"]);
-                        int stateId = Convert.ToInt32(dr["StateId"]);
-                        bool isPublished = Convert.ToBoolean(dr["IsPublished"]);
-                        string content = dr["Content"].ToString();
-                        content = content.Replace(searchString, replacementString);
+                        var itemId = (int)dr["ItemId"];
+                        var stateId = (int)dr["StateId"];
+                        var isPublished = (bool)dr["IsPublished"];
+                        var content = dr["Content"].ToString();
+                        content = content.Replace(searchValue, replacementValue);
 
-                        DataProvider.Instance.ReplaceTextHTML(itemId, content, stateId, isPublished, this.UserId);
+                        DataProvider.Instance.ReplaceTextHtml(itemId, content, stateId, isPublished, this.UserId);
                     }
 
                     string replacementResults = Localization.GetString("replacementResults", this.LocalResourceFile);
-                    this.ReplacementResultsLabel.Text = String.Format(replacementResults, searchString, replacementString, dt.Rows.Count);
+                    this.ReplacementResultsLabel.Text = string.Format(CultureInfo.CurrentCulture, replacementResults, searchValue, replacementValue, dt.Rows.Count);
                     this.ReplacementResultsLabel.Visible = true;
                     this.ResultsGrid.Visible = false;
                     this.PublishResultsGrid.Visible = false;
@@ -272,7 +271,7 @@ namespace Engage.Dnn.F3
         /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         private void SearchPublishButton_Click(object sender, EventArgs e)
         {
-            this.BindPublishData(this.SearchStringTextBox.Text.Trim());
+            this.BindPublishData(this.SearchTextBox.Text.Trim());
             this.ShowResults(true);
         }
 
@@ -285,7 +284,7 @@ namespace Engage.Dnn.F3
         {
             try
             {
-                this.BindTextHtmlData(this.SearchStringTextBox.Text.Trim());
+                this.BindTextHtmlData(this.SearchTextBox.Text.Trim());
                 this.ShowResults(false);
             }
             catch (Exception exc)

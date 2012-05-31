@@ -17,6 +17,7 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
 
+using System;
 using System.Reflection;
 using System.Runtime.InteropServices;
 
@@ -32,6 +33,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 [assembly: ComVisible(false)]
+[assembly: CLSCompliant(true)]
 
 // Version information for an assembly consists of the following four values:
 //      Major Version

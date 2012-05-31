@@ -39,7 +39,7 @@ namespace Engage.Dnn.F3
                 {
                     if (this.Settings.Contains("chkEnablePublish"))
                     {
-                        this.EnablePublishCheckBox.Checked = Convert.ToBoolean(this.Settings["chkEnablePublish"].ToString());
+                        this.EnablePublishCheckBox.Checked = bool.Parse(this.Settings["chkEnablePublish"].ToString());
                     }
 
                     if (this.Settings.Contains("lowerTabId"))

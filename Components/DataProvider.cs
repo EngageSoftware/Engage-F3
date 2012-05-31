@@ -51,13 +51,13 @@ namespace Engage.Dnn.F3
             private set;
         }
 
-        public abstract DataTable GetLinks(string searchString, int portalId, int lowerTab, int upperTab);
+        public abstract DataTable GetLinks(string searchValue, int portalId, int lowerTab, int upperTab);
 
-        public abstract DataTable GetLinks(string searchString, int lowerTab, int upperTab);
+        public abstract DataTable GetLinks(string searchValue, int lowerTab, int upperTab);
 
-        public abstract DataTable GetPublishLinks(string searchString, int portalId);
+        public abstract DataTable GetPublishLinks(string searchValue, int portalId);
 
-        public abstract void ReplaceTextHTML(int itemId, string content, int stateId, bool isPublished, int userId);
+        public abstract void ReplaceTextHtml(int itemId, string content, int stateId, bool isPublished, int userId);
 
         /// <summary>
         /// Creates the provider.
