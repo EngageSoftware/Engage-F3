@@ -121,7 +121,7 @@
     <value>Search String</value>
   </data>
   <data name="ModuleHelp.Text" xml:space="preserve">
-    <value>&lt;P&gt;A Text search module, F3, by Engage Software (www.engagesoftware.net)</value>
+    <value>&lt;p&gt;A Text search module, F3, by Engage Software (www.engagesoftware.com)&lt;/p&gt;</value>
   </data>
   <data name="lblSearchString.Help" xml:space="preserve">
     <value>s</value>
@@ -160,8 +160,8 @@
     <value>Replace Text/HTML</value>
   </data>
   <data name="lblInstructions.Text" xml:space="preserve">
-    <value>Engage: F3 allows you to quickly search through Text/HTML and &lt;a href="http://www.engagemodules.com/Modules/EngagePublish/tabid/61/Default.aspx" target=_blank&gt;Engage: Publish&lt;/a&gt; content on your website. You can also now search/replace content within your Text/HTML modules. This can be a very powerful tool, and dangerous if you aren't careful, please be aware of that when you are working with a production website. 
-&lt;b&gt;Searches within Engage: F3 are Case Sensitive.&lt;/b&gt; Please visit &lt;A href="http://www.engagemodules.com" target=_blank&gt;www.engagemodules.com&lt;/a&gt; for more information and updates to this module.</value>
+    <value>Engage: F3 allows you to quickly search through Text/HTML and &lt;a href="http://www.engagesoftware.com/Products/Modules/Engage_Publish.aspx" target=_blank&gt;Engage: Publish&lt;/a&gt; content on your website. You can also now search/replace content within your Text/HTML modules. This can be a very powerful tool, and dangerous if you aren't careful, please be aware of that when you are working with a production website. 
+&lt;b&gt;Searches within Engage: F3 are Case Sensitive.&lt;/b&gt; Please visit &lt;A href="http://www.engagesoftware.com" target=_blank&gt;www.engagesoftware.com&lt;/a&gt; for more information and updates to this module.</value>
   </data>
   <data name="plHtmlReplace.Help" xml:space="preserve">
     <value>This function will search and replace all the Text/HTML modules on your portal (portals if your are logged in with Super User Access). This may take a while to complete. Replacement is Case Sensative.</value>
