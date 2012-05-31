@@ -22,12 +22,28 @@ namespace Engage.Dnn.F3
     /// <remarks>Need to use reflection because type could be in <c>DotNetNuke.Modules.Html</c> assembly or in <c>DotNetNuke.Professional.HtmlPro</c> assembly.</remarks>
     public class HtmlTextModuleController : IHtmlTextModuleController
     {
-        private static readonly Type HtmlTextControllerType = Reflection.CreateType("DotNetNuke.Modules.Html.HtmlTextController") 
-            ?? Reflection.CreateType("DotNetNuke.Modules.HtmlPro.HtmlTextController"); // DNN 5.6 Professional
-        private static readonly Type WorkflowStateControllerType = Reflection.CreateType("DotNetNuke.Modules.Html.WorkflowStateController") 
-            ?? Reflection.CreateType("DotNetNuke.Modules.HtmlPro.WorkflowStateController"); // DNN 5.6 Professional
+        /// <summary>
+        /// The type of the <c>HtmlTextController</c> that the module is using (CE or PE)
+        /// </summary>
+        private static readonly Type HtmlTextControllerType = 
+            Reflection.CreateType("DotNetNuke.Modules.HtmlPro.HtmlTextController")  // DNN 5.6 Professional
+            ?? Reflection.CreateType("DotNetNuke.Modules.Html.HtmlTextController");
 
+        /// <summary>
+        /// The type of the <c>WorkflowStateController</c> that the module is using (CE or PE)
+        /// </summary>
+        private static readonly Type WorkflowStateControllerType =
+            Reflection.CreateType("DotNetNuke.Modules.HtmlPro.WorkflowStateController") // DNN 5.6 Professional
+            ?? Reflection.CreateType("DotNetNuke.Modules.Html.WorkflowStateController");
+
+        /// <summary>
+        /// An <c>HtmlTextController</c> instance, of the <see cref="HtmlTextControllerType"/>
+        /// </summary>
         private readonly object htmlTextController;
+
+        /// <summary>
+        /// A <c>WorkflowStateController</c> instance, of the <see cref="WorkflowStateControllerType"/>
+        /// </summary>
         private readonly object workflowStateController;
 
         /// <summary>
@@ -79,7 +95,7 @@ namespace Engage.Dnn.F3
         {
             if (htmlTextInfo == null)
             {
-                throw new ArgumentNullException("htmlTextInfo", "htmlTextInfo must not be null");
+                throw new ArgumentNullException("htmlTextInfo");
             }
 
             Reflection.InvokeMethod(HtmlTextControllerType, "UpdateHtmlText", this.htmlTextController, new object[] { htmlTextInfo.HtmlTextInfoInstance, maximumVersionHistory });
