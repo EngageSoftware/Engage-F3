@@ -8,3 +8,4 @@ _ReSharper.*
 *.suo
 *.user
 Resources.zip.manifest
+package/
