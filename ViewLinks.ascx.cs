@@ -288,7 +288,7 @@ namespace Engage.Dnn.F3
 
                     // Disable caching 
                     var hc = new HostSettingsController();
-                    hc.UpdateHostSetting("PerformanceSetting", ((int)Globals.PerformanceSettings.NoCaching).ToString());
+                    hc.UpdateHostSetting("PerformanceSetting", ((int)Globals.PerformanceSettings.NoCaching).ToString(CultureInfo.InvariantCulture));
                     DataCache.ClearHostCache(true);
 
                     foreach (DataRow searchResultRow in searchResults.Rows)
@@ -317,7 +317,7 @@ namespace Engage.Dnn.F3
                 // Enable caching with 
                 // the initial caching level 
                 var hc = new HostSettingsController();
-                hc.UpdateHostSetting("PerformanceSetting", initialCachingLevel.ToString());                
+                hc.UpdateHostSetting("PerformanceSetting", initialCachingLevel.ToString(CultureInfo.InvariantCulture));                
             }
         }
 
