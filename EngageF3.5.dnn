@@ -1,0 +1,85 @@
+<dotnetnuke type="Package" version="5.0">
+  <packages>
+    <package name="Engage: F3" type="Module" version="3.5.2">
+      <friendlyName>Engage: F3</friendlyName>
+      <description>A Search and Replacement module for the DNN HTML module and Engage: Publish from Engage Software (www.engagesoftware.com)</description>
+      <iconFile />
+      <owner>
+        <name>Engage</name>
+        <organization>Engage</organization>
+        <url>http://www.engagesoftware.com/</url>
+        <email>support@engagesoftware.com</email>
+      </owner>
+      <license src="REPLACED BY NANT"/>
+      <releaseNotes src="REPLACED BY NANT" />
+      <components>
+        <component type="ResourceFile">
+          <resourceFiles>
+            <basePath>DesktopModules/EngageF3</basePath>
+            <resourceFile>
+              <name>Resources.zip</name>
+            </resourceFile>
+          </resourceFiles>
+        </component>
+        <component type="Script">
+          <scripts>
+            <basePath>DesktopModules\EngageF3</basePath>
+            <script type="Install">
+              <name>03.01.00.SqlDataProvider</name>
+              <version>03.01.00</version>
+            </script>
+            <script type="Install">
+              <name>03.05.00.SqlDataProvider</name>
+              <version>03.05.00</version>
+            </script>
+            <script type="Install">
+              <name>03.03.00.SqlDataProvider</name>
+              <version>03.03.00</version>
+            </script>
+            <script type="UnInstall">
+              <name>Uninstall.SqlDataProvider</name>
+              <version>03.05.02</version>
+            </script>
+          </scripts>
+        </component>
+        <component type="Module">
+          <desktopModule>
+            <moduleName>Engage: F3</moduleName>
+            <foldername>EngageF3</foldername>
+            <businessControllerClass />
+            <supportedFeatures />
+            <moduleDefinitions>
+              <moduleDefinition>
+                <friendlyName>Engage: F3</friendlyName>
+                <defaultCacheTime>0</defaultCacheTime>
+                <moduleControls>
+                  <moduleControl>
+                    <controlKey />
+                    <controlSrc>DesktopModules/EngageF3/ViewLinks.ascx</controlSrc>
+                    <supportsPartialRendering>False</supportsPartialRendering>
+                    <controlType>View</controlType>
+                  </moduleControl>
+                  <moduleControl>
+                    <controlKey>Settings</controlKey>
+                    <controlSrc>DesktopModules/EngageF3/Settings.ascx</controlSrc>
+                    <supportsPartialRendering>False</supportsPartialRendering>
+                    <controlTitle>F3 Settings</controlTitle>
+                    <controlType>Edit</controlType>
+                  </moduleControl>
+                </moduleControls>
+              </moduleDefinition>
+            </moduleDefinitions>
+          </desktopModule>
+        </component>
+        <component type="Assembly">
+          <assemblies>
+            <assembly>
+              <name>EngageF3.dll</name>
+              <version></version>
+            </assembly>
+          </assemblies>
+        </component>
+     </components>
+    </package>
+  </packages>
+</dotnetnuke>

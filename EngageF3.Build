@@ -3,9 +3,9 @@
   <property name="projectName" value="F3"/>
   <property name="createTrialPackage" value="false"/>
   <property name="trialPackageLicenseName" value="Trial"/>
-  <property name="versions" value="4"/>
+  <property name="versions" value="4,5"/>
   <property name="licenses" value="Free"/>
-  <property name="packageFileNameTemplate" value="${projectName}_${projectVersion}_${packageType}" dynamic="true"/>
+  <property name="packageFileNameTemplate" value="${projectName}_${projectVersion}_${packageType}_DNN${dnnVersion}" dynamic="true"/>
   <property name="dependencySourcePackageFileNameTemplate" value="${projectName}_${packageLicense}_${projectVersion}_DependencySource" dynamic="true"/>
   <property name="createSourcePackage" value="true"/>
   <property name="sourcePackageLicenseName" value="Free"/>
