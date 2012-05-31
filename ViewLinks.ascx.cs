@@ -243,12 +243,13 @@ namespace Engage.Dnn.F3
 
                     foreach (DataRow resultRow in searchResults.Rows)
                     {
-                        Article article = Article.GetArticle((int)resultRow["ItemId"], this.PortalId, true, true);
+                        Article article = Article.GetArticle((int)resultRow["ItemId"], this.PortalId, true, true, true);
 
                         string articleDescription = article.Description.Replace(searchValue, replacementValue);
                         string articleBody = article.ArticleText.Replace(searchValue, replacementValue);
                         article.ArticleText = articleBody;
                         article.Description = articleDescription;
+
                         article.Save(this.UserInfo.UserID);
                     }
 
