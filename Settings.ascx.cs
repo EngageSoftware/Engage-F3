@@ -16,42 +16,13 @@
 //CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 //DEALINGS IN THE SOFTWARE.
 
-using DotNetNuke;
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Data;  
-using DotNetNuke.Entities;
-using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Framework;
-using DotNetNuke.Modules;
-using DotNetNuke.Security;
-using DotNetNuke.Services;
-using DotNetNuke.Services.Exceptions;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.UI;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Data;
-using System.Diagnostics;
-using System.Collections.Specialized;
-using System.Configuration;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Web;
-using System.Web.Caching;
-using System.Web.SessionState;
-using System.Web.Security;
-using System.Web.Profile;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-using System.Web.UI.WebControls.WebParts;
-using System.Web.UI.HtmlControls;
-using DotNetNuke.Entities.Modules;
+
 
 namespace Engage.Dnn.F3
 {
-
+    using System;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Services.Exceptions;
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// The Settings class manages Module Settings
@@ -83,14 +54,7 @@ namespace Engage.Dnn.F3
                 {
                     if (Settings.Contains("chkEnablePublish"))
                     {
-                        if (Convert.ToBoolean(Settings["chkEnablePublish"].ToString()))
-                        {
-                            chkEnablePublish.Checked = true;
-                        }
-                        else
-                        {
-                            chkEnablePublish.Checked = false;
-                        }
+                        chkEnablePublish.Checked = Convert.ToBoolean(Settings["chkEnablePublish"].ToString());
                     }
                     if (Settings.Contains("lowerTabId"))
                     {
@@ -123,11 +87,11 @@ namespace Engage.Dnn.F3
         {
             try
             {
-                DotNetNuke.Entities.Modules.ModuleController objModules = new DotNetNuke.Entities.Modules.ModuleController();
+                var objModules = new ModuleController();
 
                 objModules.UpdateTabModuleSetting(TabModuleId, "chkEnablePublish", chkEnablePublish.Checked.ToString());
-                objModules.UpdateTabModuleSetting(TabModuleId, "lowerTabId", txtLowerTab.Text.ToString());
-                objModules.UpdateTabModuleSetting(TabModuleId, "upperTabId", txtUpperTab.Text.ToString());
+                objModules.UpdateTabModuleSetting(TabModuleId, "lowerTabId", txtLowerTab.Text);
+                objModules.UpdateTabModuleSetting(TabModuleId, "upperTabId", txtUpperTab.Text);
 
             }
             catch (Exception exc) //Module failed to load

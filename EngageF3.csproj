@@ -40,11 +40,8 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\bin\DotNetNuke.dll</HintPath>
     </Reference>
-    <Reference Include="EngagePublish, Version=5.3.1.20979, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>References\EngagePublish.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
+    <Reference Include="DotNetNuke.Modules.Html, Version=5.1.2.0, Culture=neutral, processorArchitecture=MSIL" />
+    <Reference Include="EngagePublish, Version=5.4.0.39854, Culture=neutral, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.ApplicationBlocks.Data, Version=2.0.0.0, Culture=neutral">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\bin\Microsoft.ApplicationBlocks.Data.dll</HintPath>
@@ -143,7 +140,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>4825</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost/DotNetNuke_2/desktopmodules/engagef3</IISUrl>
+          <IISUrl>http://localhost/DNN5/desktopmodules/engagef3</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

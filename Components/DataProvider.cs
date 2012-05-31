@@ -16,37 +16,7 @@
 //CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 //DEALINGS IN THE SOFTWARE.
 
-using DotNetNuke;
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Data;
-using DotNetNuke.Entities;
-using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Framework;
-using DotNetNuke.Modules;
-using DotNetNuke.Security;
-using DotNetNuke.Services;
-using DotNetNuke.Services.Exceptions;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.UI;
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Data;
-using System.Diagnostics;
-using System.Collections.Specialized;
-using System.Configuration;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Web;
-using System.Web.Caching;
-using System.Web.SessionState;
-using System.Web.Security;
-using System.Web.Profile;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-using System.Web.UI.WebControls.WebParts;
-using System.Web.UI.HtmlControls;
 
 namespace Engage.Dnn.F3
 {
@@ -66,7 +36,7 @@ namespace Engage.Dnn.F3
         #region Shared/Static Methods
 
         // singleton reference to the instantiated object 
-        private static DataProvider objProvider = null;
+        private static DataProvider _objProvider;
 
         // constructor
         static DataProvider()
@@ -77,13 +47,13 @@ namespace Engage.Dnn.F3
         // dynamically create provider
         private static void CreateProvider()
         {
-            objProvider = (DataProvider)(DotNetNuke.Framework.Reflection.CreateObject("data", "Engage.Dnn.F3", ""));
+            _objProvider = (DataProvider)(DotNetNuke.Framework.Reflection.CreateObject("data", "Engage.Dnn.F3", ""));
         }
 
         // return the provider
         public static new DataProvider Instance()
         {
-            return objProvider;
+            return _objProvider;
         }
 
         #endregion
@@ -95,7 +65,8 @@ namespace Engage.Dnn.F3
 
         public abstract DataTable GetPublishLinks(string searchString, int portalId);
 
-        public abstract void ReplaceTextHTML(int moduleId, string desktopHtml, string desktopSummary, int userId);
+        //public abstract void ReplaceTextHTML(int moduleId, string desktopHtml, string desktopSummary, int userId);
+        public abstract void ReplaceTextHTML(int itemId, string content, int stateId, bool isPublished, int userId);
 
         #endregion
 

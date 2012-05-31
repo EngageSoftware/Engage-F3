@@ -41,10 +41,25 @@
        <asp:Label ID="lblModuleTextHeader" resourcekey="lblModuleTextHeader" runat="server"></asp:Label>
        </HeaderTemplate>
        <ItemTemplate>
-        <asp:Label ID="lblModuleText" runat="server" Text='<%# CleanupText(DataBinder.Eval(Container.DataItem,"DesktopHtml").ToString()) %>'></asp:Label>
+        <asp:Label ID="lblModuleText" runat="server" Text='<%# CleanupText(DataBinder.Eval(Container.DataItem,"Content").ToString()) %>'></asp:Label>
        </ItemTemplate>   
     </asp:TemplateColumn>
-   
+    <asp:TemplateColumn>
+       <HeaderTemplate>
+       <asp:Label ID="lblContentStateIdHeader" resourcekey="lblContentStateIdHeader" runat="server"></asp:Label>
+       </HeaderTemplate>
+       <ItemTemplate>
+        <asp:Label ID="lblContentStateIdText" runat="server" Text='<%# DataBinder.Eval(Container.DataItem,"StateId").ToString() %>'></asp:Label>
+       </ItemTemplate>   
+    </asp:TemplateColumn>
+     <asp:TemplateColumn>
+       <HeaderTemplate>
+       <asp:Label ID="lblContentIsPublishedHeader" resourcekey="lblContentIsPublishedHeader" runat="server"></asp:Label>
+       </HeaderTemplate>
+       <ItemTemplate>
+        <asp:Label ID="lblContentIsPublishedText" runat="server" Text='<%# DataBinder.Eval(Container.DataItem,"IsPublished").ToString() %>'></asp:Label>
+       </ItemTemplate>   
+    </asp:TemplateColumn>
       <asp:TemplateColumn>
        <HeaderTemplate>
         <asp:Label ID="lblEditHeader" resourcekey="lblEditHeader" runat="server"></asp:Label>

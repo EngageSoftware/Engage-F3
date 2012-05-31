@@ -17,45 +17,14 @@
 //DEALINGS IN THE SOFTWARE.
 
 
-using DotNetNuke;
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Data;
-using DotNetNuke.Entities;
-using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Framework;
-using DotNetNuke.Modules;
-using DotNetNuke.Security;
-using DotNetNuke.Services;
-using DotNetNuke.Services.Exceptions;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.UI;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Data;
-using System.Diagnostics;
-using System.Collections.Specialized;
-using System.Configuration;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Web;
-using System.Web.Caching;
-using System.Web.SessionState;
-using System.Web.Security;
-using System.Web.Profile;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-using System.Web.UI.WebControls.WebParts;
-using System.Web.UI.HtmlControls;
-
-using System.Data.SqlClient;
-using Microsoft.ApplicationBlocks.Data;
-
-using DotNetNuke.Framework.Providers;
-
 namespace Engage.Dnn.F3
 {
+
+    using DotNetNuke.Common.Utilities;
+    using System.Data;
+    using System.Text;
+    using Microsoft.ApplicationBlocks.Data;
+    using DotNetNuke.Framework.Providers;
 
     /// -----------------------------------------------------------------------------
     /// <summary>
@@ -89,7 +58,7 @@ namespace Engage.Dnn.F3
         {
 
             // Read the configuration specific information for this provider
-            Provider objProvider = (Provider)(_providerConfiguration.Providers[_providerConfiguration.DefaultProvider]);
+            var objProvider = (Provider)(_providerConfiguration.Providers[_providerConfiguration.DefaultProvider]);
 
             // Read the attributes for this provider
 
@@ -156,33 +125,20 @@ namespace Engage.Dnn.F3
 
         public string NamePrefix
         {
-            get { return this._databaseOwner + this._objectQualifier + ModuleQualifier; }
+            get { return _databaseOwner + _objectQualifier + ModuleQualifier; }
         }
 
 
         #endregion
 
-        #region Private Methods
-
-        private string GetFullyQualifiedName(string name)
-        {
-            return DatabaseOwner + ObjectQualifier + ModuleQualifier + name;
-        }
-
-        private object GetNull(object Field)
-        {
-            return DotNetNuke.Common.Utilities.Null.GetNull(Field, DBNull.Value);
-        }
-
-        #endregion
 
         #region Public Methods
 
         public override DataTable GetLinks(string searchString, int portalId, int lowerTab, int upperTab)
         {
-            StringBuilder sql = new StringBuilder(128);
+            var sql = new StringBuilder(128);
 
-            sql.Append("select ht.ModuleId, tm.TabId, ht.DesktopHtml, ht.DesktopSummary, m.ModuleTitle, t.TabName ");
+            sql.Append("select ht.ModuleId, tm.TabId, ht.Content, m.ModuleTitle, t.TabName ");
             sql.Append("from ");
             sql.Append(NamePrefix);
             sql.Append("htmltext ht ");
@@ -198,7 +154,7 @@ namespace Engage.Dnn.F3
             sql.Append("tabs t on (t.tabid = tm.tabid)");
                         
             sql.Append("where ");
-            sql.Append("ht.DesktopHtml collate SQL_Latin1_General_CP1_CS_AS  like '%");
+            sql.Append("ht.Content collate SQL_Latin1_General_CP1_CS_AS  like '%");
             sql.Append(searchString);
             sql.Append("%' and m.PortalId = ");
             sql.Append(portalId.ToString());
@@ -216,9 +172,9 @@ namespace Engage.Dnn.F3
 
         public override DataTable GetLinks(string searchString, int lowerTab, int upperTab)
         {
-            StringBuilder sql = new StringBuilder(128);
+            var sql = new StringBuilder(128);
 
-            sql.Append("select ht.ModuleId, tm.TabId, ht.DesktopHtml, ht.DesktopSummary, m.ModuleTitle, t.TabName ");
+            sql.Append("select ht.ModuleId, ht.ItemId, tm.TabId, ht.Content, ht.StateID, ht.IsPublished, m.ModuleTitle, t.TabName ");
             sql.Append("from ");
             sql.Append(NamePrefix);
             sql.Append("htmltext ht ");
@@ -232,7 +188,7 @@ namespace Engage.Dnn.F3
             sql.Append(NamePrefix);
             sql.Append("tabs t on (t.tabid = tm.tabid)");
             sql.Append("where ");
-            sql.Append("ht.DesktopHtml collate SQL_Latin1_General_CP1_CS_AS like '%");
+            sql.Append("ht.Content collate SQL_Latin1_General_CP1_CS_AS like '%");
             sql.Append(searchString);
             sql.Append("%' ");
             if (lowerTab > 0 && upperTab > lowerTab)
@@ -247,9 +203,9 @@ namespace Engage.Dnn.F3
             return ds.Tables[0];
         }
 
-        public override void ReplaceTextHTML(int moduleId, string desktopHtml, string desktopSummary, int userId)
+        public override void ReplaceTextHTML(int itemId, string content, int stateId, bool isPublished, int userId)
         {
-            SqlHelper.ExecuteNonQuery(ConnectionString, DatabaseOwner + ObjectQualifier + "UpdateHtmlText", moduleId, desktopHtml, desktopSummary, userId);
+            SqlHelper.ExecuteNonQuery(ConnectionString, DatabaseOwner + ObjectQualifier + "UpdateHtmlText", itemId, content, stateId, isPublished, userId);
 
         }
 
@@ -257,7 +213,7 @@ namespace Engage.Dnn.F3
         //public abstract DataTable GetPublishLinks(string searchString, int portalId);
         public override DataTable GetPublishLinks(string searchString, int portalId)
         {
-            StringBuilder sql = new StringBuilder(128);
+            var sql = new StringBuilder(128);
 
             sql.Append("select va.name, va.ItemId, va.articletext, va.displaytabid, t.TabName ");
             sql.Append("from ");

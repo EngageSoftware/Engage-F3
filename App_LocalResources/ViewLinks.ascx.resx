@@ -175,4 +175,10 @@
   <data name="btnReplaceEngagePublish.Text" xml:space="preserve">
     <value>Replaced Engage:Publish Values</value>
   </data>
+  <data name="lblContentIsPublishedHeader.Text" xml:space="preserve">
+    <value>Is Published?</value>
+  </data>
+  <data name="lblContentStateIdHeader.Text" xml:space="preserve">
+    <value>StateId</value>
+  </data>
 </root>
