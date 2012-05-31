@@ -22,6 +22,7 @@ namespace Engage.Dnn.F3
     using System;
     using System.Data;
     using System.Data.SqlClient;
+    using System.Web;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Framework.Providers;
     using Microsoft.ApplicationBlocks.Data;
@@ -120,7 +121,7 @@ namespace Engage.Dnn.F3
                     this.ConnectionString,
                     CommandType.StoredProcedure,
                     this.NamePrefix + "spSearchTextHtmlContent",
-                    new SqlParameter("@searchValue", searchValue),
+                    new SqlParameter("@searchValue", HttpUtility.HtmlEncode(searchValue)),
                     new SqlParameter("@portalId", portalId),
                     new SqlParameter("@lowerTabId", lowerTab),
                     new SqlParameter("@upperTabId", upperTab));
