@@ -6,16 +6,28 @@
             <asp:Label resourcekey="lblInstructions" runat="server" />
         </p>
     </div>
-    <dnn:label ResourceKey="lblSearchString" runat="server"/>
+    
+    <div><asp:CheckBox ID="AllPortalsCheckBox" runat="server" ResourceKey="Search All Portals" Visible="false" /></div>
+    
+    <asp:label ResourceKey="lblSearchString" runat="server"/>
     <asp:TextBox ID="SearchTextBox" runat="server"/>
     <asp:Button ID="SearchTextHtmlButton" resourcekey="btnSearch" runat="server" Text="Text/HTML" />
     <asp:Button ID="SearchPublishButton" resourcekey="btnEngagePublish" runat="server" Text="Engage: Publish" />
+    
     <asp:GridView ID="ResultsGrid" runat="server" AutoGenerateColumns="false" CssClass="DataGrid_Container" GridLines="None">
         <HeaderStyle VerticalAlign="Top" CssClass="DataGrid_Header" />
         <RowStyle CssClass="DataGrid_Item" />
         <AlternatingRowStyle CssClass="DataGrid_AlternatingItem" />
         <FooterStyle CssClass="DataGrid_Footer" />
         <Columns>
+            <asp:TemplateField>
+                <HeaderTemplate>
+                    <asp:Label resourcekey="lblPortalNameHeader" runat="server"/>
+                </HeaderTemplate>
+                <ItemTemplate>
+                    <asp:Label runat="server" Text='<%# Eval("PortalName") %>'/>
+                </ItemTemplate>
+            </asp:TemplateField>
             <asp:TemplateField>
                 <HeaderTemplate>
                     <asp:Label resourcekey="lblPageNameHeader" runat="server"/>
@@ -67,6 +79,14 @@
         <Columns>
             <asp:TemplateField>
                 <HeaderTemplate>
+                    <asp:Label resourcekey="lblPortalNameHeader" runat="server"/>
+                </HeaderTemplate>
+                <ItemTemplate>
+                    <asp:Label runat="server" Text='<%# Eval("PortalName") %>'/>
+                </ItemTemplate>
+            </asp:TemplateField>
+            <asp:TemplateField>
+                <HeaderTemplate>
                     <asp:Label resourcekey="lblItemId" runat="server"/>
                 </HeaderTemplate>
                 <ItemTemplate>
@@ -102,7 +122,7 @@
     </asp:GridView>
     <asp:Panel ID="ReplacementPanel" runat="server" Visible="false">
         <div>
-            <dnn:label ResourceKey="HtmlReplaceLabel" runat="server" />
+            <dnn:label ResourceKey="plHtmlReplace" runat="server" />
             <asp:TextBox ID="ReplacementTextBox" runat="server" />
             <asp:Button ID="ReplaceTextHtmlButton" resourcekey="btnReplace" runat="server" />
             <asp:Button ID="ReplacePublishButton" resourcekey="btnReplaceEngagePublish" runat="server" />

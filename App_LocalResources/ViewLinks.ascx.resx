@@ -123,9 +123,6 @@
   <data name="ModuleHelp.Text" xml:space="preserve">
     <value>&lt;p&gt;A Text search module, F3, by Engage Software (www.engagesoftware.com)&lt;/p&gt;</value>
   </data>
-  <data name="lblSearchString.Help" xml:space="preserve">
-    <value>s</value>
-  </data>
   <data name="btnSearch.Text" xml:space="preserve">
     <value>Search Text/HTML</value>
   </data>
@@ -190,10 +187,16 @@
 {1} is replacement text
 {2} is number of modules</comment>
   </data>
+  <data name="lblPortalNameHeader.Text" xml:space="preserve">
+    <value>Portal Name</value>
+  </data>
   <data name="No Publish Results.Text" xml:space="preserve">
     <value>There are no Engage: Publish articles which contain the selected criteria</value>
   </data>
   <data name="No Results.Text" xml:space="preserve">
     <value>There are no published Text/HTML modules which contain the selected criteria</value>
+  </data>
+  <data name="Search All Portals.Text" xml:space="preserve">
+    <value>Search All Portals</value>
   </data>
 </root>

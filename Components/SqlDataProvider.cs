@@ -103,7 +103,7 @@ namespace Engage.Dnn.F3
             private set;
         }
 
-        public override DataTable SearchPublishContent(string searchValue, int portalId)
+        public override DataTable SearchPublishContent(string searchValue, int? portalId)
         {
             DataSet searchResults = SqlHelper.ExecuteDataset(
                     this.ConnectionString,

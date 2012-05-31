@@ -102,6 +102,18 @@ namespace Engage.Dnn.F3
             }
         }
 
+        /// <summary>
+        /// Gets the ID of the portal to search, or <c>null</c> to search all portals.
+        /// </summary>
+        /// <value>The portal ID or <c>null</c> for all portals.</value>
+        public int? SearchPortalId
+        {
+            get
+            {
+                return this.AllPortalsCheckBox.Checked ? (int?)null : this.PortalId;
+            }
+        }
+
         protected static string CleanupText(string text)
         {
             string encodedText = HttpUtility.HtmlEncode(text);
@@ -125,23 +137,20 @@ namespace Engage.Dnn.F3
 
         protected void BindPublishData(string searchValue)
         {
-            // bind the data
-            this.PublishResultsGrid.DataSource = DataProvider.Instance.SearchPublishContent(searchValue, this.PortalId);
+            this.PublishResultsGrid.DataSource = DataProvider.Instance.SearchPublishContent(searchValue, this.SearchPortalId);
             this.PublishResultsGrid.DataBind();
+
+            // only show portal name column when we're searching multiple portals
+            this.PublishResultsGrid.Columns[0].Visible = !this.SearchPortalId.HasValue;
         }
 
         protected void BindTextHtmlData(string searchValue)
         {
-            if (this.UserInfo.IsSuperUser)
-            {
-                this.ResultsGrid.DataSource = DataProvider.Instance.SearchTextHtmlContent(searchValue, null, this.LowerTabId, this.UpperTabId);
-                this.ResultsGrid.DataBind();
-            }
-            else
-            {
-                this.ResultsGrid.DataSource = DataProvider.Instance.SearchTextHtmlContent(searchValue, this.PortalId, this.LowerTabId, this.UpperTabId);
-                this.ResultsGrid.DataBind();
-            }
+            this.ResultsGrid.DataSource = DataProvider.Instance.SearchTextHtmlContent(searchValue, this.SearchPortalId, this.LowerTabId, this.UpperTabId);
+            this.ResultsGrid.DataBind();
+
+            // only show portal name column when we're searching multiple portals
+            this.ResultsGrid.Columns[0].Visible = !this.SearchPortalId.HasValue;
         }
 
         /// <summary>
@@ -158,6 +167,14 @@ namespace Engage.Dnn.F3
             base.OnInit(e);
         }
 
+        /// <summary>
+        /// Creates the new version of the Text/HTML content for the module with the given ID, with <paramref name="searchValue"/> replaced by <paramref name="replacementValue"/>.
+        /// </summary>
+        /// <param name="searchValue">The search value.</param>
+        /// <param name="replacementValue">The replacement value.</param>
+        /// <param name="moduleId">The module id.</param>
+        /// <param name="portalId">The portal id.</param>
+        /// <param name="content">The content.</param>
         private static void CreateNewTextHtmlVersion(string searchValue, string replacementValue, int moduleId, int portalId, string content)
         {
             var workflowStateController = new WorkflowStateController();
@@ -187,6 +204,7 @@ namespace Engage.Dnn.F3
         {
             try
             {
+                this.AllPortalsCheckBox.Visible = this.UserInfo.IsSuperUser;
                 this.SearchPublishButton.Visible = this.Settings.Contains("chkEnablePublish")
                                                    && bool.Parse(this.Settings["chkEnablePublish"].ToString());
             }
@@ -210,7 +228,7 @@ namespace Engage.Dnn.F3
                 string replacementValue = this.ReplacementTextBox.Text.Trim();
                 if (!string.IsNullOrEmpty(searchValue) && !string.IsNullOrEmpty(replacementValue))
                 {
-                    DataTable searchResults = DataProvider.Instance.SearchPublishContent(searchValue, this.PortalId);
+                    DataTable searchResults = DataProvider.Instance.SearchPublishContent(searchValue, this.SearchPortalId);
 
                     foreach (DataRow resultRow in searchResults.Rows)
                     {
@@ -249,9 +267,7 @@ namespace Engage.Dnn.F3
                 string replacementValue = this.ReplacementTextBox.Text.Trim();
                 if (!string.IsNullOrEmpty(searchValue) && !string.IsNullOrEmpty(replacementValue))
                 {
-                    DataTable searchResults = this.UserInfo.IsSuperUser
-                                           ? DataProvider.Instance.SearchTextHtmlContent(searchValue, null, this.LowerTabId, this.UpperTabId)
-                                           : DataProvider.Instance.SearchTextHtmlContent(searchValue, this.PortalId, this.LowerTabId, this.UpperTabId);
+                    DataTable searchResults = DataProvider.Instance.SearchTextHtmlContent(searchValue, this.SearchPortalId, this.LowerTabId, this.UpperTabId);
 
                     foreach (DataRow searchResultRow in searchResults.Rows)
                     {
