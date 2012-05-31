@@ -14,7 +14,7 @@ AS
     SELECT ht.ItemId
     FROM {databaseOwner}[{objectQualifier}HtmlText] ht
     WHERE ht.IsPublished = 1 
-      AND ht.LastModifiedOnDate = (SELECT MAX(LastModifiedOnDate) FROM {databaseOwner}[{objectQualifier}HtmlText] WHERE ModuleID = ht.ModuleID)
+      AND ht.LastModifiedOnDate = (SELECT MAX(LastModifiedOnDate) FROM {databaseOwner}[{objectQualifier}HtmlText] WHERE ModuleID = ht.ModuleID AND IsPublished = 1)
  
     SELECT ht.ModuleID, ht.ItemID, m.TabID, ht.Content, ht.StateID, m.PortalID, m.ModuleTitle, t.TabName, p.PortalName
     FROM {databaseOwner}[{objectQualifier}HtmlText] ht 
