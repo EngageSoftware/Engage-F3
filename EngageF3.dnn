@@ -6,7 +6,7 @@
       <foldername>EngageF3</foldername>
       <modulename>Engage: F3</modulename>
       <description>A F3 module from Engage Software (www.engagesoftware.net)</description>
-      <version>03.01.01</version>
+      <version>03.01.02</version>
       <businesscontrollerclass></businesscontrollerclass>
       <resourcefile>Resources.zip</resourcefile>
       <modules>

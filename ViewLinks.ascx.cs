@@ -183,7 +183,7 @@ namespace Engage.Dnn.F3
             var workflowId = htmlTextController.GetWorkflowId(moduleId, portalId);
             var htmlInfo = htmlTextController.GetTopHtmlText(moduleId, false, workflowId) ?? htmlTextController.CreateNewHtmlTextInfo();
             htmlInfo.ModuleId = moduleId;
-            htmlInfo.Content = content.Replace(searchValue, replacementValue);
+            htmlInfo.Content = content.Replace(HttpUtility.HtmlEncode(searchValue), HttpUtility.HtmlEncode(replacementValue));
             htmlInfo.WorkflowId = workflowId;
             htmlInfo.StateId = htmlTextController.GetFirstWorkflowStateId(workflowId);
 
