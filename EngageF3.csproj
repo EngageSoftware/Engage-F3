@@ -38,9 +38,9 @@
     <DocumentationFile>LinkChecker.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="DotNetNuke, Version=4.4.1.25041, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="DotNetNuke, Version=4.9.5.5, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\bin\DotNetNuke.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="DotNetNuke.Modules.Html, Version=5.1.2.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -132,6 +132,7 @@
   <ItemGroup>
     <CodeAnalysisDictionary Include="CustomDictionary.xml" />
     <Content Include="Module.css" />
+    <Content Include="References\DotNetNuke.dll" />
     <Content Include="References\DotNetNuke.Modules.Html.dll" />
     <Content Include="References\EngagePublish.dll" />
     <Content Include="Settings.ascx" />
