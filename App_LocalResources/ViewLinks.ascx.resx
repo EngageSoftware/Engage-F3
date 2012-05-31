@@ -164,7 +164,7 @@
 &lt;b&gt;Searches within Engage: F3 are Case Sensitive.&lt;/b&gt; Please visit &lt;A href="http://www.engagesoftware.com" target=_blank&gt;www.engagesoftware.com&lt;/a&gt; for more information and updates to this module.</value>
   </data>
   <data name="plHtmlReplace.Help" xml:space="preserve">
-    <value>This function will search and replace all the Text/HTML modules on your portal (portals if your are logged in with Super User Access). This may take a while to complete. Replacement is Case Sensative.</value>
+    <value>This function will search and replace all the Text/HTML modules on your portal (portals if you are logged in with Super User Access). This may take a while to complete. Replacement is Case Sensitive.</value>
   </data>
   <data name="plHtmlReplace.Text" xml:space="preserve">
     <value>Replace Text/HTML Values:</value>
@@ -183,5 +183,11 @@
   </data>
   <data name="lnkViewLink.Text" xml:space="preserve">
     <value>View Article (opens in new window)</value>
+  </data>
+  <data name="TextHtmlReplacementResults.Format" xml:space="preserve">
+    <value>Created a new version of content with &lt;em&gt;{0}&lt;/em&gt; replaced with &lt;em&gt;{1}&lt;/em&gt; for {2} modules.  You may need to publish the change if you are not using a Direct Publish workflow.</value>
+    <comment>{0} is search text
+{1} is replacement text
+{2} is number of modules</comment>
   </data>
 </root>

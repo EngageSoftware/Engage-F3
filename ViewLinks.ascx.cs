@@ -26,7 +26,9 @@ namespace Engage.Dnn.F3
     using System.Web.UI;
     using System.Web.UI.WebControls;
     using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Modules.Html;
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.Localization;
     using Publish;
@@ -156,6 +158,26 @@ namespace Engage.Dnn.F3
             base.OnInit(e);
         }
 
+        private static void CreateNewTextHtmlVersion(string searchValue, string replacementValue, int moduleId, int portalId, string content)
+        {
+            var workflowStateController = new WorkflowStateController();
+            var htmlTextController = new HtmlTextController();
+            var workflowId = htmlTextController.GetWorkflowID(moduleId, portalId);
+            var htmlInfo = htmlTextController.GetTopHtmlText(moduleId, false, workflowId) ?? new HtmlTextInfo { ItemID = Null.NullInteger };
+            htmlInfo.ModuleID = moduleId;
+            htmlInfo.Content = content.Replace(searchValue, replacementValue);
+            htmlInfo.WorkflowID = workflowId;
+            htmlInfo.StateID = workflowStateController.GetFirstWorkflowStateID(workflowId);
+
+            // TODO: allow direct publish
+            ////if (canDirectlyPublish)
+            ////{
+            ////    htmlInfo.StateID = workflowStateController.GetNextWorkflowStateID(workflowId, htmlInfo.StateID);
+            ////}
+
+            htmlTextController.UpdateHtmlText(htmlInfo, htmlTextController.GetMaximumVersionHistory(portalId));
+        }
+
         /// <summary>
         /// Handles the <see cref="Control.Load"/> event of this control.
         /// </summary>
@@ -233,16 +255,14 @@ namespace Engage.Dnn.F3
 
                     foreach (DataRow searchResultRow in searchResults.Rows)
                     {
-                        var itemId = (int)searchResultRow["ItemId"];
-                        var stateId = (int)searchResultRow["StateId"];
-                        var isPublished = (bool)searchResultRow["IsPublished"];
+                        var moduleId = (int)searchResultRow["ModuleID"];
+                        var portalId = (int)searchResultRow["PortalID"];
                         var content = searchResultRow["Content"].ToString();
-                        content = content.Replace(searchValue, replacementValue);
 
-                        DataProvider.Instance.ReplaceTextHtml(itemId, content, stateId, isPublished, this.UserId);
+                        CreateNewTextHtmlVersion(searchValue, replacementValue, moduleId, portalId, content);
                     }
 
-                    string replacementResults = Localization.GetString("replacementResults", this.LocalResourceFile);
+                    string replacementResults = Localization.GetString("TextHtmlReplacementResults.Format", this.LocalResourceFile);
                     this.ReplacementResultsLabel.Text = string.Format(CultureInfo.CurrentCulture, replacementResults, searchValue, replacementValue, searchResults.Rows.Count);
                     this.ReplacementResultsLabel.Visible = true;
                     this.ResultsGrid.Visible = false;

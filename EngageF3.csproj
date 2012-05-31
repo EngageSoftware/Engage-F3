@@ -42,7 +42,7 @@
       <SpecificVersion>False</SpecificVersion>
       <Private>False</Private>
     </Reference>
-    <Reference Include="DotNetNuke.Modules.Html, Version=5.1.2.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="DotNetNuke.Professional.HtmlPro, Version=5.2.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <Private>False</Private>
     </Reference>
@@ -53,6 +53,7 @@
     <Reference Include="Microsoft.ApplicationBlocks.Data, Version=2.0.0.0, Culture=neutral">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\bin\Microsoft.ApplicationBlocks.Data.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="System" />
@@ -135,6 +136,7 @@
     <Content Include="Module.css" />
     <Content Include="References\DotNetNuke.dll" />
     <Content Include="References\DotNetNuke.Modules.Html.dll" />
+    <Content Include="References\DotNetNuke.Professional.HtmlPro.dll" />
     <Content Include="References\EngagePublish.dll" />
     <Content Include="Settings.ascx" />
     <Content Include="ViewLinks.ascx" />

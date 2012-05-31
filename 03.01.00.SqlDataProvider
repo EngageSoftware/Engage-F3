@@ -16,7 +16,7 @@ AS
     WHERE ht.IsPublished = 1 
       AND ht.LastModifiedOnDate = (SELECT MAX(LastModifiedOnDate) FROM {databaseOwner}[{objectQualifier}HtmlText] WHERE ModuleID = ht.ModuleID)
  
-    SELECT ht.ModuleID, ht.ItemID, m.TabID, ht.Content, ht.StateID, m.ModuleTitle, t.TabName
+    SELECT ht.ModuleID, ht.ItemID, m.TabID, ht.Content, ht.StateID, m.PortalID, m.ModuleTitle, t.TabName
     FROM {databaseOwner}[{objectQualifier}HtmlText] ht 
      JOIN @PublishedContent pc ON (ht.ItemID = pc.ItemId)
      JOIN {databaseOwner}[{objectQualifier}vw_Modules] m ON (m.ModuleID = ht.ModuleID)
@@ -45,5 +45,17 @@ AS
        AND a.IsCurrentVersion = 1',
    N'@searchValue nvarchar(4000), @portalId int',
    @searchValue, @portalId
+GO
+
+IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}EngageF3_spGetDefaultWorkflowId]', N'P') IS NOT NULL
+    DROP PROC {databaseOwner}[{objectQualifier}EngageF3_spGetDefaultWorkflowId]
+GO
+
+CREATE PROC {databaseOwner}[{objectQualifier}EngageF3_spGetDefaultWorkflowId]
+AS
+    SELECT WorkflowID
+    FROM {databaseOwner}[{objectQualifier}Workflow]
+    WHERE PortalID IS NULL
+      AND WorkflowName = 'Direct Publish' 
 GO
 

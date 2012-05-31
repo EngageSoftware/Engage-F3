@@ -126,10 +126,5 @@ namespace Engage.Dnn.F3
                     new SqlParameter("@upperTabId", upperTab));
             return searchResults.Tables[0];
         }
-
-        public override void ReplaceTextHtml(int itemId, string content, int stateId, bool isPublished, int userId)
-        {
-            SqlHelper.ExecuteNonQuery(this.ConnectionString, this.DatabaseOwner + this.ObjectQualifier + "UpdateHtmlText", itemId, content, stateId, isPublished, userId);
-        }
     }
 }

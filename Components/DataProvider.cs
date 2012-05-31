@@ -55,8 +55,6 @@ namespace Engage.Dnn.F3
 
         public abstract DataTable SearchPublishContent(string searchValue, int portalId);
 
-        public abstract void ReplaceTextHtml(int itemId, string content, int stateId, bool isPublished, int userId);
-
         /// <summary>
         /// Creates the provider.
         /// </summary>
