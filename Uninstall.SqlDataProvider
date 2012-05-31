@@ -1,9 +1,9 @@
-﻿/************************************************************/
-/*****              SqlDataProvider                     *****/
-/*****                                                  *****/
-/*****                                                  *****/
-/***** Note: To manually execute this script you must   *****/
-/*****       perform a search and replace operation     *****/
-/*****       for {databaseOwner} and {objectQualifier}  *****/
-/*****                                                  *****/
-/************************************************************/
+﻿IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}EngageF3_spSearchTextHtmlContent]', N'P') IS NOT NULL
+    DROP PROC {databaseOwner}[{objectQualifier}EngageF3_spSearchTextHtmlContent]
+GO
+
+
+IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}EngageF3_spSearchPublishContent]', N'P') IS NOT NULL
+    DROP PROC {databaseOwner}[{objectQualifier}EngageF3_spSearchPublishContent]
+GO
+
