@@ -148,7 +148,7 @@
     <value>Article Title</value>
   </data>
   <data name="lblEditPublishHeader.Text" xml:space="preserve">
-    <value>View Article (opens in new window)</value>
+    <value>View Article</value>
   </data>
   <data name="lblItemId.Text" xml:space="preserve">
     <value>ItemId</value>
@@ -176,7 +176,7 @@
     <value>Is Published?</value>
   </data>
   <data name="lblContentStateIdHeader.Text" xml:space="preserve">
-    <value>StateId</value>
+    <value>State ID</value>
   </data>
   <data name="lnkViewLink.Text" xml:space="preserve">
     <value>View Article (opens in new window)</value>

@@ -112,15 +112,19 @@ namespace Engage.Dnn.F3
             }
         }
 
-        protected static string CleanupText(string text)
+        protected static string CleanupText(string text, bool encodeText)
         {
-            string encodedText = HttpUtility.HtmlEncode(text);
-            if (encodedText.Length > 500)
+            if (encodeText)
             {
-                return encodedText.Substring(0, 500);
+                text = HttpUtility.HtmlEncode(text);
             }
 
-            return encodedText;
+            if (text.Length > 500)
+            {
+                return text.Substring(0, 500) + "&#8230;";
+            }
+
+            return text;
         }
 
         protected static string GetPublishViewLink(int itemId)

@@ -49,7 +49,7 @@
                     <asp:Label resourcekey="lblModuleTextHeader" runat="server"/>
                 </HeaderTemplate>
                 <ItemTemplate>
-                    <asp:Label runat="server" Text='<%# CleanupText(Eval("Content").ToString()) %>'/>
+                    <asp:Label runat="server" Text='<%# CleanupText(Eval("Content").ToString(), false) %>'/>
                 </ItemTemplate>
             </asp:TemplateField>
             <asp:TemplateField>
@@ -106,7 +106,7 @@
                     <asp:Label resourcekey="lblModuleTextHeader" runat="server"/>
                 </HeaderTemplate>
                 <ItemTemplate>
-                    <asp:Label runat="server" Text='<%# CleanupText(Eval("ArticleText").ToString()) %>'/>
+                    <asp:Label runat="server" Text='<%# CleanupText(Eval("ArticleText").ToString(), true) %>'/>
                 </ItemTemplate>
             </asp:TemplateField>
             <asp:TemplateField>

@@ -1,6 +1,17 @@
 .engageF3 .DataGrid_Container td
 {
-	padding:3px 3px 3px 3px;
+	padding: 1em;
+	border: solid 1px #ccc;
+}
+.engageF3 .DataGrid_Header
+{
+}
+.engageF3 th
+{
+    background-color: #eee;
+    border: solid #ccc;
+    border-width: 0 1px;
+    padding-top: 0.3em;
 }
 .settings
 {
