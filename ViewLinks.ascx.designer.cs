@@ -47,7 +47,7 @@ namespace Engage.Dnn.F3 {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DataGrid ResultsGrid;
+        protected global::System.Web.UI.WebControls.GridView ResultsGrid;
         
         /// <summary>
         /// PublishResultsGrid control.
@@ -56,7 +56,7 @@ namespace Engage.Dnn.F3 {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DataGrid PublishResultsGrid;
+        protected global::System.Web.UI.WebControls.GridView PublishResultsGrid;
         
         /// <summary>
         /// ReplacementPanel control.
