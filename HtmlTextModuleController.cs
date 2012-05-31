@@ -52,6 +52,11 @@ namespace Engage.Dnn.F3
 
         public void UpdateHtmlText(IHtmlTextInfo htmlTextInfo, int maximumVersionHistory)
         {
+            if (htmlTextInfo == null)
+            {
+                throw new ArgumentNullException("htmlTextInfo", "htmlTextInfo must not be null");
+            }
+
             Reflection.InvokeMethod(HtmlTextControllerType, "UpdateHtmlText", this.htmlTextController, new object[] { htmlTextInfo.HtmlTextInfoInstance, maximumVersionHistory });
         }
 
