@@ -45,15 +45,7 @@
                     <asp:Label resourcekey="lblContentStateIdHeader" runat="server"/>
                 </HeaderTemplate>
                 <ItemTemplate>
-                    <asp:Label runat="server" Text='<%# Eval("StateId").ToString() %>'/>
-                </ItemTemplate>
-            </asp:TemplateColumn>
-            <asp:TemplateColumn>
-                <HeaderTemplate>
-                    <asp:Label resourcekey="lblContentIsPublishedHeader" runat="server"/>
-                </HeaderTemplate>
-                <ItemTemplate>
-                    <asp:Label runat="server" Text='<%# Eval("IsPublished").ToString() %>'/>
+                    <asp:Label runat="server" Text='<%# Eval("StateId") %>'/>
                 </ItemTemplate>
             </asp:TemplateColumn>
             <asp:TemplateColumn>
@@ -101,7 +93,7 @@
                     <asp:Label resourcekey="lblEditPublishHeader" runat="server"/>
                 </HeaderTemplate>
                 <ItemTemplate>
-                    <asp:HyperLink Target="_blank" NavigateUrl='<%# GetPublishViewLink((int)Eval("ItemID"))%>' resourcekey="lnkEditLink" runat="server"/>
+                    <asp:HyperLink Target="_blank" NavigateUrl='<%# GetPublishViewLink((int)Eval("ItemID"))%>' resourcekey="lnkViewLink" runat="server"/>
                 </ItemTemplate>
             </asp:TemplateColumn>
         </Columns>

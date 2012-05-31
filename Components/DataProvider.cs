@@ -51,11 +51,9 @@ namespace Engage.Dnn.F3
             private set;
         }
 
-        public abstract DataTable GetLinks(string searchValue, int portalId, int lowerTab, int upperTab);
+        public abstract DataTable SearchTextHtmlContent(string searchValue, int? portalId, int? lowerTab, int? upperTab);
 
-        public abstract DataTable GetLinks(string searchValue, int lowerTab, int upperTab);
-
-        public abstract DataTable GetPublishLinks(string searchValue, int portalId);
+        public abstract DataTable SearchPublishContent(string searchValue, int portalId);
 
         public abstract void ReplaceTextHtml(int itemId, string content, int stateId, bool isPublished, int userId);
 

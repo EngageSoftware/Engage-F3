@@ -22,7 +22,6 @@ namespace Engage.Dnn.F3
     using System;
     using System.Data;
     using System.Data.SqlClient;
-    using System.Text;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Framework.Providers;
     using Microsoft.ApplicationBlocks.Data;
@@ -32,7 +31,7 @@ namespace Engage.Dnn.F3
     /// </summary>
     public class SqlDataProvider : DataProvider
     {
-        private const string ModuleQualifier = "";
+        private const string ModuleQualifier = "EngageF3_";
 
         private const string ProviderType = "data";
 
@@ -104,92 +103,28 @@ namespace Engage.Dnn.F3
             private set;
         }
 
-        public override DataTable GetLinks(string searchValue, int portalId, int lowerTab, int upperTab)
+        public override DataTable SearchPublishContent(string searchValue, int portalId)
         {
-            var sql = new StringBuilder(128);
-
-            sql.Append("SELECT ht.ModuleId, ht.ItemId, tm.TabId, ht.Content, ht.StateID, ht.IsPublished, m.ModuleTitle, t.TabName ");
-            sql.Append("FROM ");
-            sql.Append(this.NamePrefix);
-            sql.Append("htmltext ht ");
-            sql.Append(" JOIN ");
-            sql.Append(this.NamePrefix);
-            sql.Append("tabmodules tm ON (tm.moduleid = ht.moduleid)");
-            sql.Append(" JOIN ");
-            sql.Append(this.NamePrefix);
-            sql.Append("modules m ON (m.moduleid = tm.moduleid)");
-
-            sql.Append(" JOIN ");
-            sql.Append(this.NamePrefix);
-            sql.Append("tabs t ON (t.tabid = tm.tabid)");
-
-            sql.Append("WHERE ");
-            sql.Append("ht.Content COLLATE SQL_Latin1_General_CP1_CS_AS LIKE '%");
-            sql.Append(searchValue);
-            sql.Append("%' AND m.PortalId = @portalId");
-            if (lowerTab > 0 && upperTab > lowerTab)
-            {
-                sql.Append(" AND t.tabid >= ");
-                sql.Append(lowerTab);
-                sql.Append(" AND t.tabid <= ");
-                sql.Append(upperTab);
-            }
-
-            DataSet ds = SqlHelper.ExecuteDataset(this.ConnectionString, CommandType.Text, sql.ToString(), new SqlParameter("@portalId", portalId));
-            return ds.Tables[0];
+            DataSet searchResults = SqlHelper.ExecuteDataset(
+                    this.ConnectionString,
+                    CommandType.StoredProcedure,
+                    this.NamePrefix + "spSearchPublishContent",
+                    new SqlParameter("@searchValue", searchValue),
+                    new SqlParameter("@portalId", portalId));
+            return searchResults.Tables[0];
         }
 
-        public override DataTable GetLinks(string searchValue, int lowerTab, int upperTab)
+        public override DataTable SearchTextHtmlContent(string searchValue, int? portalId, int? lowerTab, int? upperTab)
         {
-            var sql = new StringBuilder(128);
-
-            sql.Append("SELECT ht.ModuleId, ht.ItemId, tm.TabId, ht.Content, ht.StateID, ht.IsPublished, m.ModuleTitle, t.TabName ");
-            sql.Append("FROM ");
-            sql.Append(this.NamePrefix);
-            sql.Append("htmltext ht ");
-            sql.Append(" JOIN ");
-            sql.Append(this.NamePrefix);
-            sql.Append("tabmodules tm ON (tm.moduleid = ht.moduleid)");
-            sql.Append(" JOIN ");
-            sql.Append(this.ObjectQualifier);
-            sql.Append("modules m ON (m.moduleid = tm.moduleid)");
-            sql.Append(" JOIN ");
-            sql.Append(this.NamePrefix);
-            sql.Append("tabs t ON (t.tabid = tm.tabid)");
-            sql.Append("WHERE ");
-            sql.Append("ht.Content COLLATE SQL_Latin1_General_CP1_CS_AS LIKE '%");
-            sql.Append(searchValue);
-            sql.Append("%' ");
-            if (lowerTab > 0 && upperTab > lowerTab)
-            {
-                sql.Append(" AND t.tabid >= ");
-                sql.Append(lowerTab);
-                sql.Append(" AND t.tabid <= ");
-                sql.Append(upperTab);
-            }
-
-            DataSet ds = SqlHelper.ExecuteDataset(this.ConnectionString, CommandType.Text, sql.ToString());
-            return ds.Tables[0];
-        }
-
-        public override DataTable GetPublishLinks(string searchValue, int portalId)
-        {
-            var sql = new StringBuilder(128);
-
-            sql.Append("SELECT va.name, va.ItemId, va.articletext, va.displaytabid, t.TabName ");
-            sql.Append("FROM ");
-            sql.Append(this.ObjectQualifier);
-            sql.Append("publish_vwarticles va ");
-            sql.Append(" JOIN ");
-            sql.Append(this.ObjectQualifier);
-            sql.Append("tabs t ON t.tabid = va.displaytabid ");
-
-            sql.Append(" WHERE articletext COLLATE SQL_Latin1_General_CP1_CS_AS LIKE '%");
-            sql.Append(searchValue);
-            sql.Append("%' AND va.IsCurrentVersion=1 AND va.PortalId = @portalId");
-
-            DataSet ds = SqlHelper.ExecuteDataset(this.ConnectionString, CommandType.Text, sql.ToString(), new SqlParameter("@portalId", portalId));
-            return ds.Tables[0];
+            DataSet searchResults = SqlHelper.ExecuteDataset(
+                    this.ConnectionString,
+                    CommandType.StoredProcedure,
+                    this.NamePrefix + "spSearchTextHtmlContent",
+                    new SqlParameter("@searchValue", searchValue),
+                    new SqlParameter("@portalId", portalId),
+                    new SqlParameter("@lowerTabId", lowerTab),
+                    new SqlParameter("@upperTabId", upperTab));
+            return searchResults.Tables[0];
         }
 
         public override void ReplaceTextHtml(int itemId, string content, int stateId, bool isPublished, int userId)

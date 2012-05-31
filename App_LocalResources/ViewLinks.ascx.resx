@@ -181,4 +181,7 @@
   <data name="lblContentStateIdHeader.Text" xml:space="preserve">
     <value>StateId</value>
   </data>
+  <data name="lnkViewLink.Text" xml:space="preserve">
+    <value>View Article (opens in new window)</value>
+  </data>
 </root>
