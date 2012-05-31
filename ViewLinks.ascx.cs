@@ -26,9 +26,7 @@ namespace Engage.Dnn.F3
     using System.Web.UI;
     using System.Web.UI.WebControls;
     using DotNetNuke.Common;
-    using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Modules;
-    using DotNetNuke.Modules.Html;
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.Localization;
     using Publish;
@@ -177,14 +175,13 @@ namespace Engage.Dnn.F3
         /// <param name="content">The content.</param>
         private static void CreateNewTextHtmlVersion(string searchValue, string replacementValue, int moduleId, int portalId, string content)
         {
-            var workflowStateController = new WorkflowStateController();
-            var htmlTextController = new HtmlTextController();
-            var workflowId = htmlTextController.GetWorkflowID(moduleId, portalId);
-            var htmlInfo = htmlTextController.GetTopHtmlText(moduleId, false, workflowId) ?? new HtmlTextInfo { ItemID = Null.NullInteger };
-            htmlInfo.ModuleID = moduleId;
+            var htmlTextController = CreateHtmlTextController();
+            var workflowId = htmlTextController.GetWorkflowId(moduleId, portalId);
+            var htmlInfo = htmlTextController.GetTopHtmlText(moduleId, false, workflowId) ?? htmlTextController.CreateNewHtmlTextInfo();
+            htmlInfo.ModuleId = moduleId;
             htmlInfo.Content = content.Replace(searchValue, replacementValue);
-            htmlInfo.WorkflowID = workflowId;
-            htmlInfo.StateID = workflowStateController.GetFirstWorkflowStateID(workflowId);
+            htmlInfo.WorkflowId = workflowId;
+            htmlInfo.StateId = htmlTextController.GetFirstWorkflowStateId(workflowId);
 
             // TODO: allow direct publish
             ////if (canDirectlyPublish)
@@ -193,6 +190,15 @@ namespace Engage.Dnn.F3
             ////}
 
             htmlTextController.UpdateHtmlText(htmlInfo, htmlTextController.GetMaximumVersionHistory(portalId));
+        }
+
+        /// <summary>
+        /// Creates an instance of the HTML/Text module's controller.
+        /// </summary>
+        /// <returns>A <see cref="IHtmlTextModuleController"/> instance</returns>
+        private static IHtmlTextModuleController CreateHtmlTextController()
+        {
+            return new HtmlTextModuleController();
         }
 
         /// <summary>

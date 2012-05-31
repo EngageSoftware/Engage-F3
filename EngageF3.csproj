@@ -42,10 +42,7 @@
       <SpecificVersion>False</SpecificVersion>
       <Private>False</Private>
     </Reference>
-    <Reference Include="DotNetNuke.Professional.HtmlPro, Version=5.2.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <Private>False</Private>
-    </Reference>
+    <Reference Include="DotNetNuke.Modules.Html, Version=5.1.3.0, Culture=neutral, processorArchitecture=MSIL" />
     <Reference Include="EngagePublish, Version=5.4.0.39854, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <Private>False</Private>
@@ -104,6 +101,10 @@
     <Compile Include="Assemblyinfo.cs" />
     <Compile Include="Components\DataProvider.cs" />
     <Compile Include="Components\SqlDataProvider.cs" />
+    <Compile Include="HtmlTextInfo.cs" />
+    <Compile Include="HtmlTextModuleController.cs" />
+    <Compile Include="IHtmlTextInfo.cs" />
+    <Compile Include="IHtmlTextModuleController.cs" />
     <Compile Include="Settings.ascx.designer.cs">
       <DependentUpon>Settings.ascx</DependentUpon>
     </Compile>
@@ -136,7 +137,6 @@
     <Content Include="Module.css" />
     <Content Include="References\DotNetNuke.dll" />
     <Content Include="References\DotNetNuke.Modules.Html.dll" />
-    <Content Include="References\DotNetNuke.Professional.HtmlPro.dll" />
     <Content Include="References\EngagePublish.dll" />
     <Content Include="Settings.ascx" />
     <Content Include="ViewLinks.ascx" />
