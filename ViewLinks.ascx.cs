@@ -1,6 +1,6 @@
 // <copyright file="ViewLinks.ascx.cs" company="Engage Software">
 // Engage: F3
-// Copyright (c) 2004-2010
+// Copyright (c) 2004-2013
 // by Engage Software ( http://www.engagesoftware.com )
 // </copyright>
 
