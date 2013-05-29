@@ -1,6 +1,6 @@
 // <copyright file="HtmlTextModuleController.cs" company="Engage Software">
 // Engage: F3
-// Copyright (c) 2004-2010
+// Copyright (c) 2004-2013
 // by Engage Software ( http://www.engagesoftware.com )
 // </copyright>
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
@@ -26,14 +26,16 @@ namespace Engage.Dnn.F3
         /// The type of the <c>HtmlTextController</c> that the module is using (CE or PE)
         /// </summary>
         private static readonly Type HtmlTextControllerType = 
-            Reflection.CreateType("DotNetNuke.Modules.HtmlPro.HtmlTextController")  // DNN 5.6 Professional
+            Reflection.CreateType("DotNetNuke.Professional.HtmlPro.HtmlTextController")  // DNN 7.0 Professional
+            ?? Reflection.CreateType("DotNetNuke.Modules.HtmlPro.HtmlTextController")  // DNN 5.6 Professional
             ?? Reflection.CreateType("DotNetNuke.Modules.Html.HtmlTextController");
 
         /// <summary>
         /// The type of the <c>WorkflowStateController</c> that the module is using (CE or PE)
         /// </summary>
         private static readonly Type WorkflowStateControllerType =
-            Reflection.CreateType("DotNetNuke.Modules.HtmlPro.WorkflowStateController") // DNN 5.6 Professional
+            Reflection.CreateType("DotNetNuke.Professional.HtmlPro.Components.WorkflowStateController") // DNN 5.6 Professional
+            ?? Reflection.CreateType("DotNetNuke.Modules.HtmlPro.WorkflowStateController") // DNN 5.6 Professional
             ?? Reflection.CreateType("DotNetNuke.Modules.Html.WorkflowStateController");
 
         /// <summary>
