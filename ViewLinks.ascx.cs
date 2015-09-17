@@ -183,20 +183,10 @@ namespace Engage.Dnn.F3
         private static void CreateNewTextHtmlVersion(string searchValue, string replacementValue, int moduleId, int tabId, int portalId, string content)
         {
             var htmlTextController = CreateHtmlTextController();
-            var workflowId = htmlTextController.GetWorkflowId(moduleId, tabId, portalId);
-            var htmlInfo = htmlTextController.GetTopHtmlText(moduleId, false, workflowId) ?? htmlTextController.CreateNewHtmlTextInfo();
+            var htmlInfo = htmlTextController.GetTopHtmlText(moduleId, tabId, portalId) ?? htmlTextController.CreateNewHtmlTextInfo();
             htmlInfo.ModuleId = moduleId;
             htmlInfo.Content = content.Replace(HttpUtility.HtmlEncode(searchValue), HttpUtility.HtmlEncode(replacementValue));
-            htmlInfo.WorkflowId = workflowId;
-            htmlInfo.StateId = htmlTextController.GetFirstWorkflowStateId(workflowId);
-
-            // TODO: allow direct publish
-            ////if (canDirectlyPublish)
-            ////{
-            ////    htmlInfo.StateID = workflowStateController.GetNextWorkflowStateID(workflowId, htmlInfo.StateID);
-            ////}
-
-            htmlTextController.UpdateHtmlText(htmlInfo, htmlTextController.GetMaximumVersionHistory(portalId));
+            htmlTextController.SaveHtmlContent(htmlInfo, moduleId, tabId, portalId);
         }
 
         /// <summary>

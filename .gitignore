@@ -9,3 +9,5 @@ _ReSharper.*
 *.user
 Resources.zip.manifest
 package/
+.vs/
+*.GhostDoc.xml
