@@ -16,16 +16,10 @@ namespace Engage.Dnn.F3
     /// </summary>
     public interface IHtmlTextModuleController
     {
-        int GetWorkflowId(int moduleId, int tabId, int portalId);
-
-        IHtmlTextInfo GetTopHtmlText(int moduleId, bool isPublished, int workflowId);
+        IHtmlTextInfo GetTopHtmlText(int moduleId, int tabId, int portalId);
 
         IHtmlTextInfo CreateNewHtmlTextInfo();
 
-        int GetFirstWorkflowStateId(int workflowId);
-
-        void UpdateHtmlText(IHtmlTextInfo htmlTextInfo, int maximumVersionHistory);
-
-        int GetMaximumVersionHistory(int portalId);
+        void SaveHtmlContent(IHtmlTextInfo htmlTextInfo, int moduleId, int tabId, int portalId);
     }
 }

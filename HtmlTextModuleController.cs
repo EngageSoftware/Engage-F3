@@ -14,6 +14,8 @@ namespace Engage.Dnn.F3
     using System;
     using System.Collections.Generic;
     using System.Reflection;
+
+    using DotNetNuke.Entities.Modules;
     using DotNetNuke.Framework;
 
     /// <summary>
@@ -57,7 +59,7 @@ namespace Engage.Dnn.F3
             this.workflowStateController = Reflection.CreateInstance(WorkflowStateControllerType);
         }
 
-        public int GetWorkflowId(int moduleId, int tabId, int portalId)
+        private int? GetWorkflowId(int moduleId, int tabId, int portalId)
         {
             var getWorkflowId = HtmlTextControllerType.GetMethod("GetWorkflowID");
             if (getWorkflowId != null)
@@ -72,25 +74,85 @@ namespace Engage.Dnn.F3
             }
 
             // DNN 5.4
-            var workflowPair = (KeyValuePair<string, int>)HtmlTextControllerType.InvokeMember(
-                "GetWorkflow",
-                BindingFlags.InvokeMethod,
-                null,
-                this.htmlTextController,
-                new object[] { moduleId, tabId, portalId },
-                null);
+            var getWorkflow = HtmlTextControllerType.GetMethod("GetWorkflow");
+            if (getWorkflow != null)
+            {
+                var workflowPair = (KeyValuePair<string, int>)HtmlTextControllerType.InvokeMember(
+                    "GetWorkflow",
+                    BindingFlags.InvokeMethod,
+                    null,
+                    this.htmlTextController,
+                    new object[] { moduleId, tabId, portalId },
+                    null);
 
-            return workflowPair.Value;
+                return workflowPair.Value;
+            }
+
+            return null;
         }
 
-        public IHtmlTextInfo GetTopHtmlText(int moduleId, bool isPublished, int workflowId)
+        public IHtmlTextInfo GetTopHtmlText(int moduleId, int tabId, int portalId)
         {
-            return new HtmlTextInfo(HtmlTextControllerType.InvokeMember("GetTopHtmlText", BindingFlags.InvokeMethod, null, this.htmlTextController, new object[] { moduleId, isPublished, workflowId }, null));
+            var workflowId = this.GetWorkflowId(moduleId, tabId, portalId);
+            if (workflowId != null)
+            {
+                return
+                    new HtmlTextInfo(
+                        HtmlTextControllerType.InvokeMember(
+                            "GetTopHtmlText",
+                            BindingFlags.InvokeMethod,
+                            null,
+                            this.htmlTextController,
+                            new object[] { moduleId, false, workflowId.Value },
+                            null));
+            }
+
+            var serviceLocatorType = Reflection.CreateType("DotNetNuke.Framework.ServiceLocator`2");
+            var versionControllerInterface = Reflection.CreateType("DotNetNuke.Professional.HtmlPro.Components.IVersionController");
+            var versionControllerClass = Reflection.CreateType("DotNetNuke.Professional.HtmlPro.Components.VersionController");
+            var versionControllerLocatorType = serviceLocatorType.MakeGenericType(versionControllerInterface, versionControllerClass);
+            var versionControllerInstance = versionControllerLocatorType.InvokeMember(
+                "Instance",
+                BindingFlags.Static | BindingFlags.Public | BindingFlags.GetProperty,
+                null,
+                null,
+                new object[0],
+                null);
+            
+            var htmlInfo = versionControllerInterface.InvokeMember(
+                "GetLatestVersion",
+                BindingFlags.InvokeMethod,
+                null,
+                versionControllerInstance,
+                new object[] { moduleId },
+                null);
+
+            return htmlInfo == null ? null : new HtmlTextInfo(htmlInfo);
         }
 
         public IHtmlTextInfo CreateNewHtmlTextInfo()
         {
             return new HtmlTextInfo();
+        }
+
+        public void SaveHtmlContent(IHtmlTextInfo htmlTextInfo, int moduleId, int tabId, int portalId)
+        {
+            if (htmlTextInfo == null)
+            {
+                throw new ArgumentNullException("htmlTextInfo");
+            }
+
+            var workflowId = this.GetWorkflowId(moduleId, tabId, portalId);
+            if (workflowId != null)
+            {
+                htmlTextInfo.WorkflowId = workflowId.Value;
+                htmlTextInfo.StateId = this.GetFirstWorkflowStateId(workflowId.Value);
+                this.UpdateHtmlText(htmlTextInfo, this.GetMaximumVersionHistory(portalId));
+                return;
+            }
+
+            var module = new ModuleController().GetModule(moduleId, tabId, true);
+            Reflection.InvokeMethod(HtmlTextControllerType, "SaveHtmlContent", this.htmlTextController, new object[] { htmlTextInfo.HtmlTextInfoInstance, module, });
         }
 
         public void UpdateHtmlText(IHtmlTextInfo htmlTextInfo, int maximumVersionHistory)
